@@ -76,9 +76,9 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	// Draw bottom triangles
 	{
-		for (int i = 0; i < NUM_BOTTOM_TRIANGLES; ++i)
+		for (int i = NUM_BOTTOM_TRIANGLES - 1; i >= 0; --i)
 		{
-			addTriangle(0, i + 1, i + 2);
+			addTriangle(NUM_BOTTOM_TRIANGLES - 1, i - 1, i - 2);
 		}
 	}
 
