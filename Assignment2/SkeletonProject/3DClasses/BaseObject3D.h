@@ -26,6 +26,9 @@ protected:
 	IDirect3DVertexBuffer9*     m_VertexBuffer;
 	IDirect3DIndexBuffer9*      m_IndexBuffer;
 
+	int m_NumVertices;
+	int m_NumTriangles;
+
 
 protected:
     // Replace the code in the following methods

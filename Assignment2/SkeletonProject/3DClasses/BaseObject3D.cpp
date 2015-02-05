@@ -37,8 +37,8 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
     D3DXMATRIX& view, D3DXMATRIX& projection )
 {
     // Update the statistics singlton class
-    GfxStats::GetInstance()->addVertices(8);
-    GfxStats::GetInstance()->addTriangles(12);
+    GfxStats::GetInstance()->addVertices(m_NumVertices);
+    GfxStats::GetInstance()->addTriangles(m_NumTriangles);
 
     // Set the buffers and format
     HR(gd3dDevice->SetStreamSource(0, m_VertexBuffer, 0, sizeof(VertexPos)));
@@ -51,7 +51,7 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
 	HR(gd3dDevice->SetTransform(D3DTS_PROJECTION, &projection));	
     
     // Send to render
-    HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));
+    HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_NumVertices, 0, m_NumTriangles));
 }
 
 //-----------------------------------------------------------------------------
