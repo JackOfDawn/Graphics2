@@ -10,6 +10,9 @@
     <ClCompile Include="Cone.cpp">
       <Filter>Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -20,6 +23,9 @@
     <ClInclude Include="GfxStats.h" />
     <ClInclude Include="SkeletonClass.h" />
     <ClInclude Include="Cone.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
       <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>

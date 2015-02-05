@@ -12,12 +12,16 @@
 #pragma once
 //=============================================================================
 #include <d3dx9.h>
+#include <cassert>
 
 #include "../d3dUtil.h"
 //=============================================================================
 struct IDirect3DVertexBuffer9;
 struct IDirect3DIndexBuffer9;
 //=============================================================================
+
+#define PI 3.1415926535f
+
 class BaseObject3D
 {
 protected:	
@@ -34,6 +38,32 @@ protected:
     // Replace the code in the following methods
     virtual void buildDemoCubeVertexBuffer( IDirect3DDevice9* gd3dDevice );
     virtual void buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice );
+
+	struct AddIndex
+	{
+		WORD* k = 0;
+		int index = 0;
+		int numIndices = 0;
+		int numVertices = 0;
+		void operator()(WORD v) {
+			assert(index < numIndices);
+			assert(v < numVertices);
+			k[index] = v;
+			++index;
+		}
+	} addIndex;
+
+	struct AddTriangle
+	{
+		AddIndex* addIndex;
+		int numTrianglesDrawn = 0;
+		void operator()(WORD v1, WORD v2, WORD v3) {
+			(*addIndex)(v1);
+			(*addIndex)(v2);
+			(*addIndex)(v3);
+			++numTrianglesDrawn;
+		}
+	} addTriangle;
 
 public:
     BaseObject3D(void);

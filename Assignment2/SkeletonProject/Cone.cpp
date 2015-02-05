@@ -3,8 +3,6 @@
 #include "Cone.h"
 #include "3DClasses\Vertex.h"
 
-#define PI 3.1415926535f
-
 Cone::Cone(float height, float radius, int sideFacetsNum):
 deltaDegrees((PI * 2) / sideFacetsNum),
 height(height),
@@ -58,30 +56,14 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	HR(gd3dDevice->CreateIndexBuffer(NUM_INDICES * sizeof(WORD), D3DUSAGE_WRITEONLY,
 		D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_IndexBuffer, 0));
 
-	WORD* k = 0;
+	HR(m_IndexBuffer->Lock(0, 0, (void**)&addIndex.k, 0));
+	addIndex.numIndices = NUM_INDICES;
+	addIndex.numVertices = NUM_VERTICES;
 
-	HR(m_IndexBuffer->Lock(0, 0, (void**)&k, 0));
-
-	int index = 0;
-	auto addVertex = [&k, &index](WORD v) {
-		k[index] = v;
-		index += 1;
-	};
-
-	auto addTriangle = [addVertex](WORD v1, WORD v2, WORD v3) {
-		addVertex(v1);
-		addVertex(v2);
-		addVertex(v3);
-	};
+	addTriangle.addIndex = &addIndex;
 
 	// Draw bottom triangles
 	{
-		/*
-		for (int i = NUM_BOTTOM_TRIANGLES - 1; i >= 0; --i)
-		{
-			addTriangle(NUM_BOTTOM_TRIANGLES - 1, i - 1, (i - 2) % NUM_BOTTOM_TRIANGLES);
-		}
-		*/
 		for (int i = 0; i < NUM_BOTTOM_TRIANGLES; ++i)
 		{
 			addTriangle((i + 2) % NUM_VERTICES, (i + 1) % NUM_VERTICES, 0);
@@ -96,6 +78,10 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 			addTriangle(i, (i + 1) % (NUM_VERTICES - 1), TIP_INDEX);
 		}
 	}
+
+	// Make sure we're not drawing too many triangles
+	assert(addIndex.index == NUM_INDICES);
+	assert(addTriangle.numTrianglesDrawn == NUM_TRIANGLES);
 
 	HR(m_IndexBuffer->Unlock());
 }
