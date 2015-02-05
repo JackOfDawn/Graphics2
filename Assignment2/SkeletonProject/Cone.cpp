@@ -93,7 +93,7 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 		const int TIP_INDEX = NUM_VERTICES - 1;
 		for (int i = 0; i < NUM_SIDE_TRIANGLES; ++i)
 		{
-			addTriangle(i, (i + 1) % NUM_VERTICES, TIP_INDEX);
+			addTriangle(i, (i + 1) % (NUM_VERTICES - 1), TIP_INDEX);
 		}
 	}
 
