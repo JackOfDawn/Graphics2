@@ -76,9 +76,15 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	// Draw bottom triangles
 	{
+		/*
 		for (int i = NUM_BOTTOM_TRIANGLES - 1; i >= 0; --i)
 		{
-			addTriangle(NUM_BOTTOM_TRIANGLES - 1, i - 1, i - 2);
+			addTriangle(NUM_BOTTOM_TRIANGLES - 1, i - 1, (i - 2) % NUM_BOTTOM_TRIANGLES);
+		}
+		*/
+		for (int i = 0; i < NUM_BOTTOM_TRIANGLES; ++i)
+		{
+			addTriangle((i + 2) % NUM_VERTICES, (i + 1) % NUM_VERTICES, 0);
 		}
 	}
 
@@ -87,7 +93,7 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 		const int TIP_INDEX = NUM_VERTICES - 1;
 		for (int i = 0; i < NUM_SIDE_TRIANGLES; ++i)
 		{
-			addTriangle(i, i + 1, TIP_INDEX);
+			addTriangle(i, (i + 1) % NUM_VERTICES, TIP_INDEX);
 		}
 	}
 
