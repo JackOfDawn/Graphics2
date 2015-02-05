@@ -50,7 +50,11 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 
 	mCameraRadius    = 10.0f;
 	mCameraRotationY = 1.2 * D3DX_PI;
+	mCameraRotationX = 1.2 * D3DX_PI;
 	mCameraHeight    = 5.0f;
+	mUp.x = 0;
+	mUp.y = 1;
+	mUp.z = 0;
 
     // repleace or add to the following object creation
     m_Objects.push_back( new BaseObject3D );
@@ -102,18 +106,23 @@ void SkeletonClass::updateScene(float dt)
 	gDInput->poll();
 
 	// Check input.
-	if( gDInput->keyDown(DIK_W) )	 
-		mCameraHeight   += 25.0f * dt;
+	if (gDInput->keyDown(DIK_W))
+		mUp.y = 1.0f;
 	if( gDInput->keyDown(DIK_S) )	 
-		mCameraHeight   -= 25.0f * dt;
+		mUp.y = -1;
 
 	// Divide by 50 to make mouse less sensitive. 
 	mCameraRotationY += gDInput->mouseDX() / 100.0f;
-	mCameraRadius    += gDInput->mouseDY() / 25.0f;
+	mCameraRotationX += gDInput->mouseDY() / 100.0f;
+	// += gDInput->mouseDZ() / 25.0f;
 
 	// If we rotate over 360 degrees, just roll back to 0
 	if( fabsf(mCameraRotationY) >= 2.0f * D3DX_PI ) 
 		mCameraRotationY = 0.0f;
+	// If we rotate over 360 degrees, just roll back to 0
+	if (fabsf(mCameraRotationX) >= 2.0f * D3DX_PI)
+		mCameraRotationX = 0.0f;
+
 
 	// Don't let radius get too small.
 	if( mCameraRadius < 5.0f )
@@ -154,12 +163,15 @@ void SkeletonClass::drawScene()
 
 void SkeletonClass::buildViewMtx()
 {
-	float x = mCameraRadius * cosf(mCameraRotationY);
-	float z = mCameraRadius * sinf(mCameraRotationY);
-	D3DXVECTOR3 pos(x, mCameraHeight, z);
+	float x = mCameraRadius * sinf(mCameraRotationY) * cosf(mCameraRotationX);
+	float y = mCameraRadius * sinf(mCameraRotationX);
+	float z = mCameraRadius * cosf(mCameraRotationY) * cosf(mCameraRotationX); 
+	D3DXVECTOR3 pos(x, y, z);
+	//D3DXVECTOR3 pos2(mCameraHeight, )
 	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
-	D3DXMatrixLookAtLH(&mView, &pos, &target, &up);
+
+	
+	D3DXMatrixLookAtLH(&mView, &pos, &target, &mUp);
 }
 
 void SkeletonClass::buildProjMtx()

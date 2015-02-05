@@ -42,11 +42,13 @@ public:
 
 private:
 	float mCameraRotationY;
+	float mCameraRotationX;
 	float mCameraRadius;
 	float mCameraHeight;
 
 	D3DXMATRIX mView;
 	D3DXMATRIX mProj;
+	D3DXVECTOR3 mUp;
 
     std::vector<BaseObject3D*>      m_Objects;
 };
