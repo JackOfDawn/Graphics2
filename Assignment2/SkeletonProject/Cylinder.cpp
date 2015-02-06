@@ -79,8 +79,8 @@ void Cylinder::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	{
 		for (int i = 0; i < NUM_SIDE_TRIANGLES / 2; ++i)
 		{
-			addTriangle((i + m_NumVertices / 2) % m_NumVertices, (i + 1) % m_NumVertices, (i + 1 + m_NumVertices / 2) % m_NumVertices);
-			addTriangle((i + 1) % m_NumVertices, (i + m_NumVertices / 2) % m_NumVertices, i % m_NumVertices);
+			addTriangle((i + m_NumVertices / 2) % m_NumVertices, (i + 1) % (m_NumVertices / 2), max((i + 1 + m_NumVertices / 2) % m_NumVertices, m_NumVertices / 2));
+			addTriangle((i + 1) % (m_NumVertices / 2), (i + m_NumVertices / 2) % m_NumVertices, i % (m_NumVertices / 2));
 		}
 	}
 
