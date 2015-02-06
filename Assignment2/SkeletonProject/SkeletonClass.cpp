@@ -127,6 +127,8 @@ void SkeletonClass::updateScene(float dt)
 	// If we rotate over 360 degrees, just roll back to 0
 	if (fabsf(mCameraRotationX) >= 2.0f * D3DX_PI)
 		mCameraRotationX = 0.0f;
+	else if (mCameraRotationX < 0.0f)
+		mCameraRotationX = 1.999f * D3DX_PI;
 
 
 	// Don't let radius get too small.
@@ -172,6 +174,11 @@ void SkeletonClass::buildViewMtx()
 	float y = mCameraRadius * sinf(mCameraRotationX);
 	float z = mCameraRadius * cosf(mCameraRotationY) * cosf(mCameraRotationX); 
 	D3DXVECTOR3 pos(x, y, z);
+
+	if (mCameraRotationX > D3DX_PI / 2 && mCameraRotationX < (3 * D3DX_PI) / 2)
+		mUp.y = -1;
+	else
+		mUp.y = 1;
 	//D3DXVECTOR3 pos2(mCameraHeight, )
 	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
 
