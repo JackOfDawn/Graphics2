@@ -13,7 +13,7 @@ sideFacetsNum(sideFacetsNum)
 
 void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
-	const int NUM_VERTICES = sideFacetsNum + 1; // Add 1 for top point
+	const int NUM_VERTICES = sideFacetsNum + 1 + 1; // Add 1 for top point, one for the center
 	m_NumVertices = NUM_VERTICES;
 
 	HR(gd3dDevice->CreateVertexBuffer(NUM_VERTICES * sizeof(VertexPos), D3DUSAGE_WRITEONLY,
@@ -37,6 +37,10 @@ void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 
 		assert(i < NUM_VERTICES);
 		v[i] = VertexPos(0, height, 0);
+		++i;
+
+		assert(i < NUM_VERTICES);
+		v[i] = VertexPos(0, 0, 0);
 	}
 
 	HR(m_VertexBuffer->Unlock());
@@ -44,12 +48,13 @@ void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 {
-	const int NUM_VERTICES = sideFacetsNum + 1;
-	const int NUM_BOTTOM_TRIANGLES = sideFacetsNum - 2;
-	assert(NUM_BOTTOM_TRIANGLES > 0);
+	const int NUM_VERTICES = m_NumVertices;
+	const int NUM_BOTTOM_TRIANGLES = sideFacetsNum;
 	const int NUM_SIDE_TRIANGLES = sideFacetsNum;
 	const int NUM_TRIANGLES = NUM_BOTTOM_TRIANGLES + NUM_SIDE_TRIANGLES;
 	const int NUM_INDICES = NUM_TRIANGLES * 3;
+	const int END_OF_BOTTOM_VERTICES = NUM_VERTICES - 2;
+	const int TIP_INDEX = NUM_VERTICES - 2;
 
 	m_NumTriangles = NUM_TRIANGLES;
 
@@ -63,20 +68,16 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	addTriangle.addIndex = &addIndex;
 
 	// Draw bottom triangles
+	for (int i = 0; i < NUM_BOTTOM_TRIANGLES; ++i)
 	{
-		for (int i = 0; i < NUM_BOTTOM_TRIANGLES; ++i)
-		{
-			addTriangle((i + 2) % NUM_VERTICES, (i + 1) % NUM_VERTICES, 0);
-		}
+		const int CENTER_INDEX = NUM_VERTICES - 1;
+		addTriangle((i + 2) % END_OF_BOTTOM_VERTICES, (i + 1) % END_OF_BOTTOM_VERTICES, CENTER_INDEX);
 	}
 
 	// Draw side triangles
+	for (int i = 0; i < NUM_SIDE_TRIANGLES; ++i)
 	{
-		const int TIP_INDEX = NUM_VERTICES - 1;
-		for (int i = 0; i < NUM_SIDE_TRIANGLES; ++i)
-		{
-			addTriangle(i, (i + 1) % (NUM_VERTICES - 1), TIP_INDEX);
-		}
+		addTriangle((i + 1) % END_OF_BOTTOM_VERTICES, (i + 2) % END_OF_BOTTOM_VERTICES, TIP_INDEX);
 	}
 
 	// Make sure we're not drawing too many triangles
