@@ -13,6 +13,12 @@
     <ClCompile Include="Cylinder.cpp">
       <Filter>Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="IcoSphere.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -26,6 +32,12 @@
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IcoSphere.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
       <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>
