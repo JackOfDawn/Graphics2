@@ -25,14 +25,16 @@ void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 	// Add stuff to the vertex buffer
 	{
 		float remainingDegrees = PI * 2;
+		int remainingFacets = sideFacetsNum;
 		int i = 0;
 
-		while (remainingDegrees > 0)
+		while (remainingFacets > 0)
 		{
 			assert(i < NUM_VERTICES);
 			v[i] = VertexPos(cos(remainingDegrees) * radius, 0, sin(remainingDegrees) * radius);
 			++i;
 			remainingDegrees -= deltaDegrees;
+			--remainingFacets;
 		}
 
 		assert(i < NUM_VERTICES);

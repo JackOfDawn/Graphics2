@@ -20,7 +20,7 @@ struct IDirect3DVertexBuffer9;
 struct IDirect3DIndexBuffer9;
 //=============================================================================
 
-#define PI 3.1415926535f
+#define PI D3DX_PI
 
 class BaseObject3D
 {

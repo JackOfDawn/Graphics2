@@ -23,15 +23,17 @@ void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 	HR(m_VertexBuffer->Lock(0, 0, (void**)&v, 0));
 
 	{
+		int remainingFacets = sideFacetsNum;
 		float remainingDegrees = PI * 2;
 		int i = 0;
 
-		while (remainingDegrees > 0)
+		while (remainingFacets > 0)
 		{
 			assert(i < NUM_VERTICES);
 			v[i] = VertexPos(cos(remainingDegrees) * radius, 0, sin(remainingDegrees) * radius);
 			++i;
 			remainingDegrees -= deltaDegrees;
+			--remainingFacets;
 		}
 
 		assert(i < NUM_VERTICES);
@@ -39,13 +41,15 @@ void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 		++i;
 
 		remainingDegrees = PI * 2;
+		remainingFacets = sideFacetsNum;
 
-		while (remainingDegrees > 0)
+		while (remainingFacets > 0)
 		{
 			assert(i < NUM_VERTICES);
 			v[i] = VertexPos(cos(remainingDegrees) * radius, height, sin(remainingDegrees) * radius);
 			++i;
 			remainingDegrees -= deltaDegrees;
+			--remainingFacets;
 		}
 
 		assert(i < NUM_VERTICES);
