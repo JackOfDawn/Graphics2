@@ -31,18 +31,18 @@ void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 		while (remainingFacets > 0)
 		{
 			assert(i < NUM_VERTICES);
-			v[i] = VertexPos(cos(remainingDegrees) * radius, 0, sin(remainingDegrees) * radius);
+			v[i] = VertexPos(cos(remainingDegrees) * radius, -height / 2, sin(remainingDegrees) * radius);
 			++i;
 			remainingDegrees -= deltaDegrees;
 			--remainingFacets;
 		}
 
 		assert(i < NUM_VERTICES);
-		v[i] = VertexPos(0, height, 0);
+		v[i] = VertexPos(0, height / 2, 0);
 		++i;
 
 		assert(i < NUM_VERTICES);
-		v[i] = VertexPos(0, 0, 0);
+		v[i] = VertexPos(0, -height / 2, 0);
 	}
 
 	HR(m_VertexBuffer->Unlock());
