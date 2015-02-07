@@ -95,7 +95,6 @@
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="GfxStats.cpp" />
-    <ClCompile Include="IcoSphere.cpp" />
     <ClCompile Include="SkeletonClass.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
@@ -108,7 +107,6 @@
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="GfxStats.h" />
-    <ClInclude Include="IcoSphere.h" />
     <ClInclude Include="SkeletonClass.h" />
     <ClInclude Include="Sphere.h" />
   </ItemGroup>

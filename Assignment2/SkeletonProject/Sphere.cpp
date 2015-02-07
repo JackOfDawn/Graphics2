@@ -3,17 +3,16 @@
 
 #include <assert.h>
 
-Sphere::Sphere(float radius, int numLat, int numLong) :
+Sphere::Sphere(int radius, int numSideFacets) :
 radius(radius),
-numLat(numLat),
-numLong(numLong)
+numSideFacets(numSideFacets)
 {
 
 }
 
 void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
-	const int NUM_VERTICIES = numLong * numLat + 2; //Add 2 for the top and the bottom
+	const int NUM_VERTICIES = numSideFacets * numSideFacets + 2 + numSideFacets; //Add 2 for the top and the bottom
 	m_NumVertices = NUM_VERTICIES;
 
 	HR(gd3dDevice->CreateVertexBuffer(NUM_VERTICIES * sizeof(VertexPos), D3DUSAGE_WRITEONLY,
@@ -24,8 +23,8 @@ void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	//Add to the vertex buffer
 	{
-		float deltaPhi = (2 * D3DX_PI) / numLong;
-		float deltaTheta = D3DX_PI / (numLat + 2);
+		float deltaPhi = (2 * D3DX_PI) / numSideFacets;
+		float deltaTheta = D3DX_PI / (numSideFacets + 2);
 		float theta = 0;
 		float phi = 0;
 		int i = 0;
@@ -35,11 +34,11 @@ void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 		v[i] = VertexPos(0, 0, radius);
 		++i;
 
-		//add the meat of the sphere
-		for (int t = 0; t < numLat; t++)
+		//add the meat of the spher
+		for (int t = 0; t <= numSideFacets; t++)
 		{
 			theta += deltaTheta;
-			for (int p = 0; p < numLong; p++)
+			for (int p = 0; p < numSideFacets; p++)
 			{
 				phi += deltaPhi;
 				assert(i < NUM_VERTICIES);
@@ -50,7 +49,7 @@ void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 		
 		//cap off the sandwich
 		assert(i < NUM_VERTICIES);
-		v[i] = VertexPos(0, 0, -radius);
+		v[i] = VertexPos(0,0, -radius);
 		++i;
 
 		HR(m_VertexBuffer->Unlock());
@@ -62,9 +61,9 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	const int NUM_VERTICIES = m_NumVertices;
 	const int NORTH_INDEX = 0;
 	const int SOUTH_INDEX = NUM_VERTICIES - 1;
-	const int NUM_QUADS = (numLat - 1) * (numLong);
-	const int NUM_TRIANGLES = NUM_QUADS * 2 + 2 * (numLong);
-	const int NUM_INDICES = NUM_TRIANGLES * 3;
+	const int NUM_TRIANGLES = (numSideFacets  * numSideFacets) * 2 + numSideFacets *2;
+	//const int NUM_TRIANGLES = NUM_QUADS * 2 + 2 * (numLong);
+	const int NUM_INDICES = NUM_TRIANGLES * 4;
 
 
 	m_NumTriangles = NUM_TRIANGLES;
@@ -73,40 +72,45 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	HR(m_IndexBuffer->Lock(0, 0, (void**)&addIndex.k, 0));
 	addIndex.numIndices = NUM_INDICES;
-	addIndex.numVertices = NUM_VERTICIES + 100;
+	addIndex.numVertices = NUM_VERTICIES;
 
 	addTriangle.addIndex = &addIndex;
 
 	//draw the north triangles
 	int baseVertex = 1;
-	for (size_t i = 0; i < numLong; i++)
+	for (size_t i = 0; i < numSideFacets; i++)
 	{
-		addTriangle(NORTH_INDEX, baseVertex + ((i + 1) % numLong ), baseVertex + (i % numLong));
+		addTriangle(NORTH_INDEX, baseVertex + ((i + 1) % numSideFacets), baseVertex + (i % numSideFacets));
 	}
 
+	
 	//draw the meat
-	for (size_t j = 0; j < numLat; j++)
+	for (size_t j = 0; j < numSideFacets; j++)
 	{
-		for (size_t i = 0; i < numLong; i++)
+		for (size_t i = 0; i < numSideFacets; i++)
 		{
 			//draw upper right triangle
-			//if (i != numLong - 1)
+			
 			addTriangle(
-				baseVertex + (i % numLong),
-				baseVertex + ((i + 1) % numLong),
-				baseVertex + ((i + 1) % numLong) + numLong);
+				baseVertex + (i % numSideFacets),
+				baseVertex + ((i + 1) % numSideFacets),
+				baseVertex + ((i + 1) % numSideFacets) + numSideFacets);
 
 			//draw lower left triangle
-			//addTriangle(
-			//	baseVertex + (i % numLong),
-			//	baseVertex + ((i + 1) % numLong) + numLong,
-			//	baseVertex + numLong);
+			addTriangle(
+				baseVertex + (i % numSideFacets),
+				baseVertex + ((i + 1) % numSideFacets) + numSideFacets,
+				baseVertex + (i % numSideFacets) + numSideFacets);
 
 
 		}
-		baseVertex += numLong;
+		baseVertex += numSideFacets;
 	}
-
+	
+	for (size_t i = 0; i < numSideFacets; i++)
+	{
+		addTriangle(baseVertex + (i %numSideFacets), baseVertex + (i + 1) % numSideFacets, SOUTH_INDEX);
+	}
 
 
 
