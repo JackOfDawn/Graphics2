@@ -16,6 +16,9 @@
     <ClCompile Include="Sphere.cpp">
       <Filter>Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="Torus.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -32,6 +35,9 @@
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Torus.h">
       <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>

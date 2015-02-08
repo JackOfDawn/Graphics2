@@ -97,6 +97,7 @@
     <ClCompile Include="GfxStats.cpp" />
     <ClCompile Include="SkeletonClass.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Torus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="GfxStats.h" />
     <ClInclude Include="SkeletonClass.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Torus.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
