@@ -38,6 +38,10 @@ protected:
     // Replace the code in the following methods
     virtual void buildDemoCubeVertexBuffer( IDirect3DDevice9* gd3dDevice );
     virtual void buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice );
+	virtual void scale(float sx, float sy, float sz);
+	virtual void translateTo(float tx, float ty, float tz);
+	virtual void rotate(float rx, float ry, float rz);
+
 
 	struct AddIndex
 	{
