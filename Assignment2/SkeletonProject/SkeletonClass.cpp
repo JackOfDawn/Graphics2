@@ -52,10 +52,10 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 		PostQuitMessage(0);
 	}
 
-	mCameraRadius    = 10.0f;
+	mCameraRadius    = 50.0f;
 	mCameraRotationY = 1.2 * D3DX_PI;
-	mCameraRotationX = 1.2 * D3DX_PI;
-	mCameraHeight    = 5.0f;
+	mCameraRotationX = D3DX_PI;
+	//mCameraHeight    = 5.0f;
 	mUp.x = 0;
 	mUp.y = 1;
 	mUp.z = 0;
@@ -68,7 +68,8 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	m_Objects.push_back(new Torus(2, .5, 20, 20));
 
     m_Objects[0]->Create( gd3dDevice );
-
+	m_Objects[0]->translateTo(0, 0, 10);
+	m_Objects[0]->scale(2, 1, 3);
 	onResetDevice();
 
 	InitAllVertexDeclarations();
@@ -116,9 +117,9 @@ void SkeletonClass::updateScene(float dt)
 
 	// Check input.
 	if (gDInput->keyDown(DIK_W))
-		mUp.y = 1.0f;
+		mCameraRadius += .1f;
 	if( gDInput->keyDown(DIK_S) )	 
-		mUp.y = -1;
+		mCameraRadius -= .1f;
 
 	// Divide by 50 to make mouse less sensitive. 
 	mCameraRotationY += gDInput->mouseDX() / 100.0f;
@@ -134,6 +135,7 @@ void SkeletonClass::updateScene(float dt)
 	else if (mCameraRotationX < 0.0f)
 		mCameraRotationX = 1.999f * D3DX_PI;
 
+	m_Objects[0]->Update(dt);
 
 	// Don't let radius get too small.
 	if( mCameraRadius < 5.0f )

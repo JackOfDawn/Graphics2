@@ -106,5 +106,12 @@ void Torus::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Torus::Update(float dt)
 {
-
+	//scale(2, 2, 2, 1);
+	//rotateAroundWorld(3, 0, 0, dt);
+	rotateYawPitchRoll(0, 2, 0, dt);
+//		D3DXMATRIX transform;
+//	D3DXMatrixIdentity(&transform);
+//	D3DXMatrixRotationYawPitchRoll(&transform, 3 * dt, 2 * dt, 1 * dt);
+//	D3DXMatrixMultiply(&m_World, &m_World, &transform);
 }
+

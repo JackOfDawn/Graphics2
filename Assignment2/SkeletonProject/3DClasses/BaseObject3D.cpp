@@ -124,28 +124,50 @@ void BaseObject3D::buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice )
 //----------------------------------------------------------------------------
 void BaseObject3D::Update(float dt)
 {
-
+	//D3DXMATRIX transform;
+	//D3DXMatrixIdentity(&transform);
+	//D3DXMatrixRotationYawPitchRoll(&transform, 3, 2, 1);
+	//D3DXMatrixMultiply(&m_World, &m_World, &transform);
 }
 
 
 //----------------------------------------------------------------------------
-void BaseObject3D::scale(float sx, float sy, float sz)
+void BaseObject3D::scale(float sx, float sy, float sz, float dt)
 {
-
+	D3DXMATRIX transform;
+	D3DXMatrixIdentity(&transform);
+	D3DXMatrixScaling(&transform, sx, sy, sz);
+	D3DXMatrixMultiply(&m_World, &m_World, &transform);
 }
 
 
 //----------------------------------------------------------------------------
-void BaseObject3D::translateTo(float tx, float ty, float tz)
+void BaseObject3D::translateTo(float tx, float ty, float tz, float dt)
 {
-
+	m_World._41 = tx;
+	m_World._42 = ty;
+	m_World._43 = tz;
 }
 
 
 //----------------------------------------------------------------------------
-void BaseObject3D::rotate(float rx, float ry, float rz)
+void BaseObject3D::rotateAroundWorld(float rx, float ry, float rz, float dt)
 {
-	
+	D3DXMATRIX transform;
+	D3DXMatrixIdentity(&transform);
+	D3DXMatrixRotationYawPitchRoll(&transform, ry * dt, rx * dt, rz * dt);
+	D3DXMatrixMultiply(&m_World, &m_World, &transform);
+	//D3DXMatrixRotationYawPitchRoll(&m_World, ry * dt, rx * dt, rz * dt);
+}
+
+//----------------------------------------------------------------------------
+
+void BaseObject3D::rotateYawPitchRoll(float rx, float ry, float rz, float dt)
+{
+	D3DXVECTOR3 oldCoord(m_World._41, m_World._42, m_World._43);
+	translateTo(0, 0, 0);
+	rotateAroundWorld(rx, ry, rz, dt);
+	translateTo(oldCoord.x, oldCoord.y, oldCoord.z, dt);
 }
 
 

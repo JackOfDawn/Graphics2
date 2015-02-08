@@ -38,11 +38,7 @@ protected:
     // Replace the code in the following methods
     virtual void buildDemoCubeVertexBuffer( IDirect3DDevice9* gd3dDevice );
     virtual void buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice );
-	virtual void scale(float sx, float sy, float sz);
-	virtual void translateTo(float tx, float ty, float tz);
-	virtual void rotate(float rx, float ry, float rz);
-
-
+	
 	struct AddIndex
 	{
 		WORD* k = 0;
@@ -72,6 +68,12 @@ protected:
 public:
     BaseObject3D(void);
     ~BaseObject3D(void);
+	
+	 void scale(float sx, float sy, float sz, float dt = 1);
+	 void translateTo(float tx, float ty, float tz, float dt = 1);
+	 void rotateYawPitchRoll(float rx, float ry, float rz, float dt = 1);
+	 void rotateAroundWorld(float rx, float ry, float rz, float dt = 1);
+
 
     // Replace or add to the following code as you progress with the material
     virtual void Create( IDirect3DDevice9* gd3dDevice );
