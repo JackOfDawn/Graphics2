@@ -4,6 +4,7 @@ class Cone : public BaseObject3D
 {
 public:
 	Cone(float height, float radius, int sideFacetsNum);
+	virtual void Update(float dt);
 
 protected:
 	virtual void buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice);

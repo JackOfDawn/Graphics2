@@ -88,3 +88,8 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	HR(m_IndexBuffer->Unlock());
 }
+
+void Cone::Update(float dt)
+{
+
+}

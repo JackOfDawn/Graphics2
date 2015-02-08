@@ -112,72 +112,10 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 		addTriangle(baseVertex + (i %numSideFacets), baseVertex + (i + 1) % numSideFacets, SOUTH_INDEX);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*
-	//draw north Triangles
-	for (int i = 0; i <= numLong; i++)
-	{
-		if (i != numLong)
-			addTriangle(NORTH_INDEX, (i + 1), i);
-		else
-			addTriangle(NORTH_INDEX, (i + 1) % numLong, i);
-	}
-
-	//draw the meat
-	int baseIndex = 1;
-	for (int i = 0; i < numLat - 1; i++)
-	{
-		for (size_t j = 0; j < numLong; j++)
-		{
-			int topLeftIndex = baseIndex + j;
-			//build topright triangle
-			if (j != numLong - 1)
-				addTriangle(topLeftIndex, topLeftIndex + 1, topLeftIndex + 1 + numLong);
-			
-			//build bottom left triangle
-			if (j != numLong - 1)
-				addTriangle(topLeftIndex, topLeftIndex + numLong + 1,  topLeftIndex + numLong);
-		}
-		baseIndex += numLong;
-	}
-	*/
-	// draw the south
-	
-	//for (size_t i = 0; i < numLong; i++)
-	//{
-	//	if (i != numLong - 1)
-	//		addTriangle(baseIndex + i, baseIndex + i + 1, SOUTH_INDEX);
-	//	else
-	//		addTriangle(baseIndex + i, baseIndex, SOUTH_INDEX);
-	//}
-
-	
 	HR(m_IndexBuffer->Unlock());
+}
+
+void Sphere::Update(float dt)
+{
+
 }

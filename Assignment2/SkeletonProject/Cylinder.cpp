@@ -104,3 +104,8 @@ void Cylinder::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	HR(m_IndexBuffer->Unlock());
 }
+
+void Cylinder::Update(float dt)
+{
+
+}

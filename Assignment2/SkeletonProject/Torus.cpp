@@ -103,3 +103,8 @@ void Torus::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	}
 
 }
+
+void Torus::Update(float dt)
+{
+
+}

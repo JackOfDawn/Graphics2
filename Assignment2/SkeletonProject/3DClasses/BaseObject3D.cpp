@@ -120,3 +120,8 @@ void BaseObject3D::buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice )
 	HR(m_IndexBuffer->Unlock());
 }
 //=============================================================================
+
+void BaseObject3D::Update(float dt)
+{
+
+}
