@@ -166,6 +166,7 @@ void BaseObject3D::rotateYawPitchRoll(float rx, float ry, float rz, float dt)
 {
 	D3DXVECTOR3 oldCoord(m_World._41, m_World._42, m_World._43);
 	translateTo(0, 0, 0);
+
 	rotateAroundWorld(rx, ry, rz, dt);
 	translateTo(oldCoord.x, oldCoord.y, oldCoord.z, dt);
 }

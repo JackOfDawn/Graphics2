@@ -91,5 +91,5 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Cone::Update(float dt)
 {
-
+	rotateAroundWorld(0, -1, 0, dt);
 }

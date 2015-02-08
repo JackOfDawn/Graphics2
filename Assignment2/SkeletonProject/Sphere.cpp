@@ -80,7 +80,10 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	int baseVertex = 1;
 	for (size_t i = 0; i < numSideFacets; i++)
 	{
-		addTriangle(NORTH_INDEX, baseVertex + ((i + 1) % numSideFacets), baseVertex + (i % numSideFacets));
+		addTriangle(
+			NORTH_INDEX,
+			baseVertex + (i % numSideFacets),
+			baseVertex + ((i + 1) % numSideFacets));
 	}
 
 	
@@ -93,14 +96,15 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 			
 			addTriangle(
 				baseVertex + (i % numSideFacets),
-				baseVertex + ((i + 1) % numSideFacets),
-				baseVertex + ((i + 1) % numSideFacets) + numSideFacets);
+				baseVertex + ((i + 1) % numSideFacets) + numSideFacets,
+
+				baseVertex + ((i + 1) % numSideFacets));
 
 			//draw lower left triangle
 			addTriangle(
 				baseVertex + (i % numSideFacets),
-				baseVertex + ((i + 1) % numSideFacets) + numSideFacets,
-				baseVertex + (i % numSideFacets) + numSideFacets);
+				baseVertex + (i % numSideFacets) + numSideFacets,
+				baseVertex + ((i + 1) % numSideFacets) + numSideFacets);
 
 
 		}
@@ -109,7 +113,10 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	
 	for (size_t i = 0; i < numSideFacets; i++)
 	{
-		addTriangle(baseVertex + (i %numSideFacets), baseVertex + (i + 1) % numSideFacets, SOUTH_INDEX);
+		addTriangle(baseVertex + (i %numSideFacets),
+
+			SOUTH_INDEX,
+			baseVertex + (i + 1) % numSideFacets);
 	}
 
 	HR(m_IndexBuffer->Unlock());
@@ -117,5 +124,6 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Sphere::Update(float dt)
 {
-
+	rotateAroundWorld(0, 1, 0, dt);
+	//rotateYawPitchRoll(1, 1, 1, dt);
 }

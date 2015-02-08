@@ -64,13 +64,61 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
     //m_Objects.push_back( new BaseObject3D );
 	//m_Objects.push_back(new Cone(1, 1, 50));
 	//m_Objects.push_back(new Cylinder(1, 1, 50));
-	//m_Objects.push_back(new Sphere(1, 10));
-	m_Objects.push_back(new Torus(2, .5, 20, 20));
+	//m_Objects.push_back(new Torus(2, 1, 20, 20));
+	int yOffset = -5;
+	//Create the planet
+	int counter = 0;
+	m_Objects.push_back(new Sphere(10, 20));
+    m_Objects[counter]->Create( gd3dDevice );
+	m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
+	m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
+	//m_Objects[counter]->scale(10, 10, 10);
+	counter++;
 
-    m_Objects[0]->Create( gd3dDevice );
-	m_Objects[0]->translateTo(0, 0, 10);
-	m_Objects[0]->scale(2, 1, 3);
+	m_Objects.push_back(new Torus(5, .5, 10, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
+	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
+	counter++;
+
+
+	//CreatetWoRings
+	m_Objects.push_back(new Torus(2, .5, 10, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
+	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
+	counter++;
+
+	//create Cylinder Core
+	m_Objects.push_back(new Cylinder(2, 10, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 12 + yOffset, 0);
+
+	counter++;
+
+	//create Cone to balance sphere
+	m_Objects.push_back(new Cone(10, 5, 20));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 18 + yOffset, 0);
+	counter++;
+	//create mini cones
+	m_Objects.push_back(new Cone(4, 1, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
+	counter++;	
+	//create mini cones
+	m_Objects.push_back(new Cone(4, 1, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
+	counter++;
 	onResetDevice();
+
+	//other ring
+	m_Objects.push_back(new Torus(2, .5, 10, 10));
+	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
+	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
+	counter++;
 
 	InitAllVertexDeclarations();
 }
@@ -116,9 +164,9 @@ void SkeletonClass::updateScene(float dt)
 	gDInput->poll();
 
 	// Check input.
-	if (gDInput->keyDown(DIK_W))
+	if (gDInput->keyDown(DIK_S))
 		mCameraRadius += .1f;
-	if( gDInput->keyDown(DIK_S) )	 
+	if( gDInput->keyDown(DIK_W) )	 
 		mCameraRadius -= .1f;
 
 	// Divide by 50 to make mouse less sensitive. 
@@ -135,7 +183,12 @@ void SkeletonClass::updateScene(float dt)
 	else if (mCameraRotationX < 0.0f)
 		mCameraRotationX = 1.999f * D3DX_PI;
 
-	m_Objects[0]->Update(dt);
+
+	for each (BaseObject3D* shape in m_Objects)
+	{
+		shape->Update(dt);
+	}
+	
 
 	// Don't let radius get too small.
 	if( mCameraRadius < 5.0f )
