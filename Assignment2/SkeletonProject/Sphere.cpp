@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-Sphere::Sphere(int radius, int numSideFacets) :
+Sphere::Sphere(float radius, int numSideFacets) :
 radius(radius),
 numSideFacets(numSideFacets)
 {
@@ -78,7 +78,7 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	//draw the north triangles
 	int baseVertex = 1;
-	for (size_t i = 0; i < numSideFacets; i++)
+	for (size_t i = 0; i < (unsigned)numSideFacets; i++)
 	{
 		addTriangle(
 			NORTH_INDEX,
@@ -88,9 +88,9 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 	
 	//draw the meat
-	for (size_t j = 0; j < numSideFacets; j++)
+	for (size_t j = 0; j < (unsigned)numSideFacets; j++)
 	{
-		for (size_t i = 0; i < numSideFacets; i++)
+		for (size_t i = 0; i < (unsigned)numSideFacets; i++)
 		{
 			//draw upper right triangle
 			
@@ -111,7 +111,7 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 		baseVertex += numSideFacets;
 	}
 	
-	for (size_t i = 0; i < numSideFacets; i++)
+	for (size_t i = 0; i < (unsigned)numSideFacets; i++)
 	{
 		addTriangle(baseVertex + (i %numSideFacets),
 

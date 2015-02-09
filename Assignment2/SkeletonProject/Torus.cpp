@@ -84,9 +84,9 @@ void Torus::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 	addTriangle.addIndex = &addIndex;
 	int currentRingIndex = 0;
 	
-	for (size_t r = 0; r < NUM_RINGS; r++)
+	for (size_t r = 0; r < (unsigned)NUM_RINGS; r++)
 	{
-		for (size_t s = 0; s < NUM_SIDES; s++)
+		for (size_t s = 0; s < (unsigned)NUM_SIDES; s++)
 		{
 			//draw upperright tri
 			addTriangle(

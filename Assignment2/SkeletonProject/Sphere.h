@@ -3,7 +3,7 @@
 class Sphere : public BaseObject3D
 {
 public:
-	Sphere(int radius, int numeSideFacets);
+	Sphere(float radius, int numeSideFacets);
 	virtual void Update(float dt);
 
 protected:

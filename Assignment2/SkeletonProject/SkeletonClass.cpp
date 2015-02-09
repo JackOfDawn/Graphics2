@@ -65,7 +65,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//m_Objects.push_back(new Cone(1, 1, 50));
 	//m_Objects.push_back(new Cylinder(1, 1, 50));
 	//m_Objects.push_back(new Torus(2, 1, 20, 20));
-	int yOffset = -5;
+	float yOffset = -5;
 	//Create the planet
 	int counter = 0;
 	m_Objects.push_back(new Sphere(10, 20));
