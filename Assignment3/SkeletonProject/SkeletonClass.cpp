@@ -48,6 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEVTYPE devType, DWORD requestedVP)
 : D3DApp(hInstance, winCaption, devType, requestedVP)
 {
+	oldKeyO = false;
 	if(!checkDeviceCaps())
 	{
 		MessageBox(0, "checkDeviceCaps() Failed", 0, 0);
@@ -70,14 +71,14 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	
 	m_Objects.push_back(new Sphere(10, 20));
     m_Objects[counter]->Create( gd3dDevice );
-	m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
+	//m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
 	//m_Objects[counter]->scale(10, 10, 10);
 	counter++;
 	
 	m_Objects.push_back(new Box(5, 5, 5));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
+	//m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
 	counter++;
 
@@ -85,15 +86,15 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//CreatetWoRings
 	m_Objects.push_back(new Teapot());
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
-	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
+	//m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
+	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
 
 	//create Cylinder Core
 	m_Objects.push_back(new Cylinder(2, 20, 10));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 12 + yOffset, 0);
-	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 2);
+	//m_Objects[counter]->translateTo(0, 12 + yOffset, 0);
+	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 2);
 
 	counter++;
 
@@ -120,6 +121,8 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
 	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
+
+	m_CurrentObjectIter = m_Objects.begin();
 }
 
 SkeletonClass::~SkeletonClass()
@@ -190,6 +193,17 @@ void SkeletonClass::updateScene(float dt)
 	else if (mCameraRotationX < 0.0f)
 		mCameraRotationX = 1.999f * D3DX_PI;
 
+	bool newKeyO = gDInput->keyDown(DIKEYBOARD_O);
+	if (!oldKeyO && newKeyO)
+	{
+		if (++m_CurrentObjectIter == m_Objects.end())
+		{
+			m_CurrentObjectIter = m_Objects.begin();
+		}
+	}
+
+	oldKeyO = newKeyO;
+
 
 	for each (BaseObject3D* shape in m_Objects)
 	{
@@ -220,10 +234,17 @@ void SkeletonClass::drawScene()
 	//HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 
     // Render all the objects
+	/*
+	for (m_CurrentObjectIter = m_Objects.begin(); m_CurrentObjectIter != m_Objects.end(); ++m_CurrentObjectIter)
+	{
+		(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj);
+	}
     for ( unsigned int obj=0 ; obj<m_Objects.size() ; obj++ )
     {
         m_Objects[obj]->Render( gd3dDevice, mView, mProj );
     }
+	*/
+	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj);
 
     // display the render statistics
     GfxStats::GetInstance()->display();

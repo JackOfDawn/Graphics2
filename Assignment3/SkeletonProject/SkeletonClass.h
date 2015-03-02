@@ -51,6 +51,8 @@ private:
 	D3DXVECTOR3 mUp;
 
     std::vector<BaseObject3D*>      m_Objects;
+	std::vector<BaseObject3D*>::iterator m_CurrentObjectIter;
+	bool oldKeyO;
 };
 //=============================================================================
 #endif // _SKELETON_CLASS_H_
