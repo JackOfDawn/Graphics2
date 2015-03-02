@@ -14,7 +14,9 @@
 #include <d3dx9.h>
 #include <cassert>
 #include <memory>
+#include <functional>
 #include "../BaseMaterial.h"
+#include "Vertex.h"
 
 #include "../d3dUtil.h"
 //=============================================================================
@@ -83,6 +85,7 @@ public:
     virtual void Create( IDirect3DDevice9* gd3dDevice );
 	virtual void Update(float dt);
     virtual void Render( IDirect3DDevice9* gd3dDevice, D3DXMATRIX& view, D3DXMATRIX& projection );
+	void SetUpUV(std::function<D3DXVECTOR2(VertexPos)> f);
 };
 //=============================================================================
 #endif // _BASE_OBJECT_3D_H

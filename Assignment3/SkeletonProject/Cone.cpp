@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "PhongMaterial.h"
 #include "Cone.h"
 #include "3DClasses\Vertex.h"
 
@@ -21,6 +22,15 @@ void Cone::Create(IDirect3DDevice9* gd3dDevice)
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
+
+	m_Material.reset(new PhongMaterial(gd3dDevice));
+
+	SetUpUV([this](VertexPos in) {
+		D3DXVECTOR2 out;
+		out.x = in.pos.x / radius;
+		out.y = in.pos.y / height;
+		return out;
+	});
 }
 
 void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

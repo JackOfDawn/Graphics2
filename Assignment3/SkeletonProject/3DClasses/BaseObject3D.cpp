@@ -47,21 +47,25 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
 	HR(gd3dDevice->SetVertexDeclaration(VertexPos::Decl));
 
     // Set matrices and model relevant render date
-	HR(gd3dDevice->SetTransform(D3DTS_WORLD, &m_World));
-	HR(gd3dDevice->SetTransform(D3DTS_VIEW, &view));
-	HR(gd3dDevice->SetTransform(D3DTS_PROJECTION, &projection));	
+	//HR(gd3dDevice->SetTransform(D3DTS_WORLD, &m_World));
+	//HR(gd3dDevice->SetTransform(D3DTS_VIEW, &view));
+	//HR(gd3dDevice->SetTransform(D3DTS_PROJECTION, &projection));	
     
     // Send to render
 	if (m_Mesh)
 	{
 		if (m_Material)
+		{
+			D3DXMATRIX viewProjMat = view * projection;
+			m_Material->Update(m_World, viewProjMat);
 			m_Material->Render(m_Mesh);
-		else
-			HR(m_Mesh->DrawSubset(0));
+		}
+		//else
+			//HR(m_Mesh->DrawSubset(0));
 	}
 	else
 	{
-		HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_NumVertices, 0, m_NumTriangles));
+		//HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_NumVertices, 0, m_NumTriangles));
 	}
 }
 
@@ -184,3 +188,24 @@ void BaseObject3D::rotateYawPitchRoll(float rx, float ry, float rz, float dt)
 
 
 //=============================================================================
+
+void BaseObject3D::SetUpUV(std::function<D3DXVECTOR2(VertexPos)> f)
+{
+		D3DVERTEXELEMENT9 elem[MAXD3DDECLLENGTH];
+		UINT numElements;
+		VertexPos::Decl->GetDeclaration(elem, &numElements);
+		ID3DXMesh* mesh;
+		m_Mesh->CloneMesh(0, elem, gd3dDevice, &mesh);
+		VertexPos* verts;
+		HR(mesh->LockVertexBuffer(0, (void**)&verts));
+
+		for (unsigned i = 0; i < mesh->GetNumVertices(); ++i)
+		{
+			verts[i].texcoord = f(verts[i]);
+		}
+
+		HR(mesh->UnlockVertexBuffer());
+
+		m_Mesh->Release();
+		m_Mesh = mesh;
+}

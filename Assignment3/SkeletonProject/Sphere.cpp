@@ -13,16 +13,25 @@ numSideFacets(numSideFacets)
 
 void Sphere::Create(IDirect3DDevice9* gd3dDevice)
 {	
-	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
 	HR(D3DXCreateSphere(gd3dDevice, radius, numSideFacets / 2, numSideFacets / 2, &m_Mesh, 0));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_Material.reset(new PhongMaterial(gd3dDevice));
+
+	// Set up new vertices and do texture mapping
+	SetUpUV([](VertexPos in) -> D3DXVECTOR2 {
+		double Rxz = sqrt(pow(in.pos.x, 2) + pow(in.pos.z, 2));
+		D3DXVECTOR2 out;
+		out.x = (FLOAT)((atan(in.pos.x / in.pos.z) / D3DX_PI) + 0.5);
+		out.y = (FLOAT)((atan(in.pos.y / Rxz) / D3DX_PI) + 0.5);
+		return out;
+	});
 }
 void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
+	/*
 	const int NUM_VERTICIES = numSideFacets * numSideFacets + 2 + numSideFacets; //Add 2 for the top and the bottom
 	m_NumVertices = NUM_VERTICIES;
 
@@ -65,6 +74,7 @@ void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 
 		HR(m_VertexBuffer->Unlock());
 	}
+	*/
 }
 
 void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)

@@ -53,6 +53,8 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 		MessageBox(0, "checkDeviceCaps() Failed", 0, 0);
 		PostQuitMessage(0);
 	}
+	InitAllVertexDeclarations();
+	HR(gd3dDevice->SetVertexDeclaration(VertexPos::Decl));
 
 	mCameraRadius    = 50.0f;
 	mCameraRotationY = 1.2 * D3DX_PI;
@@ -62,11 +64,6 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	mUp.y = 1;
 	mUp.z = 0;
 
-    // repleace or add to the following object creation
-    //m_Objects.push_back( new BaseObject3D );
-	//m_Objects.push_back(new Cone(1, 1, 50));
-	//m_Objects.push_back(new Cylinder(1, 1, 50));
-	//m_Objects.push_back(new Torus(2, 1, 20, 20));
 	float yOffset = -5;
 	//Create the planet
 	int counter = 0;
@@ -74,14 +71,14 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	m_Objects.push_back(new Sphere(10, 20));
     m_Objects[counter]->Create( gd3dDevice );
 	m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
-	m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
+	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
 	//m_Objects[counter]->scale(10, 10, 10);
 	counter++;
 	
 	m_Objects.push_back(new Box(5, 5, 5));
 	m_Objects[counter]->Create(gd3dDevice);
 	m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
-	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
+	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
 	counter++;
 
 
@@ -93,9 +90,10 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	counter++;
 
 	//create Cylinder Core
-	m_Objects.push_back(new Cylinder(2, 10, 10));
+	m_Objects.push_back(new Cylinder(2, 20, 10));
 	m_Objects[counter]->Create(gd3dDevice);
 	m_Objects[counter]->translateTo(0, 12 + yOffset, 0);
+	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 2);
 
 	counter++;
 
@@ -122,8 +120,6 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
 	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
-	
-	InitAllVertexDeclarations();
 }
 
 SkeletonClass::~SkeletonClass()
@@ -220,8 +216,8 @@ void SkeletonClass::drawScene()
 	HR(gd3dDevice->BeginScene());
 
     // Set render statws for the entire scene here:
-	//HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
-	HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	//HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 
     // Render all the objects
     for ( unsigned int obj=0 ; obj<m_Objects.size() ; obj++ )

@@ -1,5 +1,6 @@
 #include "Cylinder.h"
 #include "3DClasses\Vertex.h"
+#include "PhongMaterial.h"
 
 #include <assert.h>
 
@@ -19,6 +20,7 @@ void Cylinder::Create(IDirect3DDevice9* gd3dDevice)
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
+	m_Material.reset(new PhongMaterial(gd3dDevice));
 }
 
 void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

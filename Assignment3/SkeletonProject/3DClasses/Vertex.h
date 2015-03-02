@@ -19,6 +19,8 @@ struct VertexPos
 	VertexPos(const D3DXVECTOR3& v):pos(v){}
 
 	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 texcoord;
 	static IDirect3DVertexDeclaration9* Decl;
 };
 //=============================================================================

@@ -1,6 +1,6 @@
 #include "PhongMaterial.h"
 #include <d3d9.h>
-#include <d3dx9effect.h>
+#include <assert.h>
 
 PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 {
@@ -16,9 +16,11 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	if (!m_Effect)
 		::MessageBox(0, "Effect is super broken, dude.", 0, 0);
 
-	m_DiffuseColor = D3DXVECTOR3(0.0f, 1.0f, 0.5f);
-	m_SpecularColor = D3DXVECTOR3(1.0f, 0.2f, 0.0f);
-	m_Shininess = 1.0f;
+	//m_DiffuseColor = D3DXVECTOR3(0.0f, 1.0f, 0.5f);
+	//m_SpecularColor = D3DXVECTOR3(1.0f, 0.2f, 0.0f);
+	m_DiffuseColor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+	m_SpecularColor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+	m_Shininess = 89.0f;
 
 	// Set up handles
 	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
@@ -39,7 +41,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 	{
 		D3DXHANDLE hMaterialAmbient = m_Effect->GetParameterByName(NULL, "materialAmbient");
-		D3DXVECTOR4 materialAmbient(0.113357f, 1.0f, 1.0f, 1.0f);
+		D3DXVECTOR4 materialAmbient(1.0f, 1.0f, 1.0f, 1.0f);
 		m_Effect->SetVector(hMaterialAmbient, &materialAmbient);
 	}
 
@@ -50,7 +52,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 	{
 		m_SpecularColHandle = m_Effect->GetParameterByName(NULL, "materialSpecular");
-		m_Effect->SetFloatArray(m_SpecularColHandle, (FLOAT*)m_SpecularColHandle, 3);
+		m_Effect->SetFloatArray(m_SpecularColHandle, (FLOAT*)m_SpecularColor, 3);
 	}
 
 	{
@@ -60,7 +62,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 	{
 		IDirect3DTexture9* tex = nullptr;
-		D3DXCreateTextureFromFile(device, "texture.jpg", &tex);
+		D3DXCreateTextureFromFile(device, "Earth.jpg", &tex);
 		if (!tex)
 		{
 			::MessageBox(0, "Couldn't load texture", 0, 0);
@@ -68,26 +70,17 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 		else
 		{
 			D3DXHANDLE hTexture = m_Effect->GetParameterByName(NULL, "texTexture");
+			assert(hTexture != NULL);
 			m_Effect->SetTexture(hTexture, tex);
+			tex->Release();
 		}
 	}
 
 	// Vertex shader handles
-	{
-		m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
-	}
-
-	{
-		m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
-	}
-
-	{
-		m_MatWorldITHandle = m_Effect->GetParameterByName(NULL, "matWorldIT");
-	}
-
-	{
-		m_ViewPositionHandle = m_Effect->GetParameterByName(NULL, "viewPosition");
-	}
+	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
+	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
+	m_MatWorldITHandle = m_Effect->GetParameterByName(NULL, "matWorldIT");
+	m_ViewPositionHandle = m_Effect->GetParameterByName(NULL, "viewPosition");
 }
 
 PhongMaterial::~PhongMaterial()
@@ -103,7 +96,7 @@ void PhongMaterial::ConnectToEffect(ID3DXEffect* effect)
 void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 {
 	m_WorldMat = worldMat;
-	m_ViewProjectionMat = viewProjMat;
+	m_ViewProjectionMat = worldMat * viewProjMat;
 
 	D3DXMATRIX worldMatIT;
 	if (!D3DXMatrixInverse(&worldMatIT, NULL, &m_WorldMat))
@@ -113,13 +106,13 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 	}
 
 	D3DXMatrixTranspose(&worldMatIT, &worldMat);
-	m_Effect->SetMatrix(m_MatWorldITHandle, &worldMatIT);
+	HR(m_Effect->SetMatrix(m_MatWorldITHandle, &worldMatIT));
 	
 	D3DXVECTOR4 viewPosition(viewProjMat._41, viewProjMat._42, viewProjMat._43, viewProjMat._44);
-	m_Effect->SetVector(m_ViewPositionHandle, &viewPosition);
+	HR(m_Effect->SetVector(m_ViewPositionHandle, &viewPosition));
 
-	m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat);
-	m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat);
+	HR(m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat));
+	HR(m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat));
 
 	HR(m_Effect->CommitChanges());
 }
@@ -127,6 +120,8 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 void PhongMaterial::Render(ID3DXBaseMesh* mesh)
 {
 	UINT passes = 0;
+	D3DXHANDLE technique = m_Effect->GetTechniqueByName("Default_DirectX_Effect");
+	m_Effect->SetTechnique(technique);
 	m_Effect->Begin(&passes, NULL);
 	for (UINT pass = 0; pass < passes; ++pass)
 	{

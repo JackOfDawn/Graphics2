@@ -46,11 +46,12 @@ VS_OUTPUT Default_DirectX_Effect_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
    VS_OUTPUT Output;
 
    Output.Position = mul( Input.Position, matViewProjection );
+   // Output.Position = mul( Input.Position, matWorldView);
    
    Output.texCoord = Input.texCoord;
    
    //calulate the normal vector
-   Output.normal = mul(matWorldIT, Input.normal);
+   Output.normal = (matWorld, Input.normal);
    //calculate the view vector
    float3 worldPos = mul(Input.Position, matWorld).xyz;
    Output.view = viewPosition - worldPos;   
@@ -104,14 +105,19 @@ float materialPower
 > = float( 1.00 );
 texture texTexture;
 
+/*
 texture texTexture_Tex
 <
    string ResourceName = "EarthClouds.jpg";
    //string ResourceName = "..\\..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\EarthClouds.jpg";
 >;
-sampler sampTexture = sampler_state
+*/
+sampler S0 = sampler_state
 {
-   Texture = (texTexture_Tex);
+   Texture = (texTexture);
+   MinFilter = LINEAR;
+   MagFilter = LINEAR;
+   MipFilter = LINEAR;
 };
 /*
 sampler sampTexture = sampler_state{
@@ -147,7 +153,7 @@ float4 Default_DirectX_Effect_Pass_0_Pixel_Shader_ps_main(Default_DirectX_Effect
    float2 texCoord = Input.texCoord;
    
    //sample the texture
-   float4 texColor = tex2D(sampTexture, texCoord);
+   float4 texColor = tex2D(S0, texCoord);
    //combine all color components
    float3 color = (saturate(ambient + diffuse) * texColor + specular) * dirLightColor;
    //calculate transp
