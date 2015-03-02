@@ -117,6 +117,6 @@ void Cylinder::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Cylinder::Update(float dt)
 {
-	rotateAroundWorld(0, -1, 0, dt);
+//	rotateAroundWorld(0, -1, 0, dt);
 
 }

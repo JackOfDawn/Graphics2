@@ -22,6 +22,8 @@
 #include "3DClasses\BaseObject3D.h"
 #include "3DClasses\Vertex.h"
 #include "Cone.h"
+#include "Box.h"
+#include "Teapot.h"
 #include "Cylinder.h"
 #include "Sphere.h"
 #include "Torus.h"
@@ -76,7 +78,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//m_Objects[counter]->scale(10, 10, 10);
 	counter++;
 	
-	m_Objects.push_back(new Torus(5, .5, 10, 10));
+	m_Objects.push_back(new Box(5, 5, 5));
 	m_Objects[counter]->Create(gd3dDevice);
 	m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
 	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
@@ -84,7 +86,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 
 
 	//CreatetWoRings
-	m_Objects.push_back(new Torus(2, .5, 10, 10));
+	m_Objects.push_back(new Teapot());
 	m_Objects[counter]->Create(gd3dDevice);
 	m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
 	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);

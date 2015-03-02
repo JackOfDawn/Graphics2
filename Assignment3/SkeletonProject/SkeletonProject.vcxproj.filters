@@ -20,6 +20,12 @@
       <Filter>Shapes</Filter>
     </ClCompile>
     <ClCompile Include="BaseMaterial.cpp" />
+    <ClCompile Include="Teapot.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -42,6 +48,12 @@
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="BaseMaterial.h" />
+    <ClInclude Include="Teapot.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shapes">

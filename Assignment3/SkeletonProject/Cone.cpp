@@ -14,6 +14,7 @@ sideFacetsNum(sideFacetsNum)
 
 void Cone::Create(IDirect3DDevice9* gd3dDevice)
 {	
+	
 	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
 	HR(D3DXCreateCylinder(gd3dDevice, radius, 0, height, sideFacetsNum / 2, sideFacetsNum / 2, &m_Mesh, 0));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
@@ -103,5 +104,5 @@ void Cone::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Cone::Update(float dt)
 {
-	rotateAroundWorld(0, -1, 0, dt);
+//	rotateAroundWorld(0, -1, 0, dt);
 }

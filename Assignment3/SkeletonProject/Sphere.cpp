@@ -133,6 +133,6 @@ void Sphere::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
 
 void Sphere::Update(float dt)
 {
-	rotateAroundWorld(0, 1, 0, dt);
+//	rotateAroundWorld(0, 1, 0, dt);
 	//rotateYawPitchRoll(1, 1, 1, dt);
 }
