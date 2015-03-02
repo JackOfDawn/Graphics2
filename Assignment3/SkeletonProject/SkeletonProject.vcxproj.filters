@@ -19,12 +19,17 @@
     <ClCompile Include="Torus.cpp">
       <Filter>Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="BaseMaterial.cpp" />
     <ClCompile Include="Teapot.cpp">
       <Filter>Shapes</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMaterial.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongMaterial.cpp">
+      <Filter>Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,17 +52,28 @@
     <ClInclude Include="Torus.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="BaseMaterial.h" />
     <ClInclude Include="Teapot.h">
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Shapes</Filter>
     </ClInclude>
+    <ClInclude Include="BaseMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="PhongMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shapes">
       <UniqueIdentifier>{465c1b64-e197-4548-8ae0-8e0c0fe28ee8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{520df58f-2cb4-4533-8a57-2302eb9549a2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="phong.fx" />
   </ItemGroup>
 </Project>

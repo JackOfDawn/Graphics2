@@ -54,7 +54,10 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
     // Send to render
 	if (m_Mesh)
 	{
-		HR(m_Mesh->DrawSubset(0));
+		if (m_Material)
+			m_Material->Render(m_Mesh);
+		else
+			HR(m_Mesh->DrawSubset(0));
 	}
 	else
 	{

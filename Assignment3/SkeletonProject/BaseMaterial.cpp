@@ -23,9 +23,17 @@ BaseMaterial::~BaseMaterial(void)
 //-----------------------------------------------------------------------------
 // Need to add here a code that will associate with your shader parameters and 
 // register them.
+
+/*
 void BaseMaterial::ConnectToEffect( ID3DXEffect* effect )
 {
     m_Effect = effect;
 }
+
+void BaseMaterial::Render(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
+{
+
+}
+*/
 
 //=============================================================================

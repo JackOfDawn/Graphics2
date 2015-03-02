@@ -27,13 +27,13 @@ protected:
     //---------- Shader Handles ----------
     // Generic shader handles
     D3DXHANDLE          m_WorldMatHandle;    
-    D3DXHANDLE          m_ViewProjectionMatHandel;
+    D3DXHANDLE          m_ViewProjectionMatHandle;
 
     D3DXHANDLE          m_LightPosWHandle;       // Position (spot/point) / Direction (directional)
     D3DXHANDLE          m_ViewerPosWHandle;
 
     // Material specific shader handles
-    D3DXHANDLE          m_DIffuseColHandle;    
+    D3DXHANDLE          m_DiffuseColHandle;    
     D3DXHANDLE          m_SpecularColHandle;       
     D3DXHANDLE          m_ShininessHandle;   
 
@@ -42,8 +42,9 @@ public:
     BaseMaterial(void);
     virtual ~BaseMaterial(void);
 
-    void ConnectToEffect( ID3DXEffect* effect );
-    void Render( D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat ); 
+    virtual void ConnectToEffect( ID3DXEffect* effect ) = 0;
+    virtual void Update( D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat ) = 0; 
+	virtual void Render(ID3DXBaseMesh* mesh) = 0;
 };
 //=============================================================================
 

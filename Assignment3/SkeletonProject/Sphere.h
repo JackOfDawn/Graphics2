@@ -1,4 +1,6 @@
 #include "3DClasses\BaseObject3D.h"
+#include "BaseMaterial.h"
+#include <memory>
 
 class Sphere : public BaseObject3D
 {

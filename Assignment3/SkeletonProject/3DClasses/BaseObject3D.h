@@ -13,6 +13,8 @@
 //=============================================================================
 #include <d3dx9.h>
 #include <cassert>
+#include <memory>
+#include "../BaseMaterial.h"
 
 #include "../d3dUtil.h"
 //=============================================================================
@@ -30,6 +32,7 @@ protected:
 	IDirect3DVertexBuffer9*     m_VertexBuffer;
 	IDirect3DIndexBuffer9*      m_IndexBuffer;
 	ID3DXMesh*					m_Mesh;
+	std::unique_ptr<BaseMaterial> m_Material;
 
 	int m_NumVertices;
 	int m_NumTriangles;
