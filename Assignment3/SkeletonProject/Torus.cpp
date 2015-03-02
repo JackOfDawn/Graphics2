@@ -11,6 +11,17 @@ numSideFacets2(numSideFacets2)
 
 }
 
+
+void Torus::Create(IDirect3DDevice9* gd3dDevice)
+{	
+	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
+	HR(D3DXCreateTorus(gd3dDevice, radius1, radius2, numSideFacets1, numSideFacets2, &m_Mesh, 0));
+	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
+	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
+	m_NumVertices = m_Mesh->GetNumVertices();
+	m_NumTriangles = m_Mesh->GetNumFaces();
+}
+
 void Torus::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
 	const int NUM_RINGS = numSideFacets1;

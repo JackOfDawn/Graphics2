@@ -5,6 +5,7 @@ class Sphere : public BaseObject3D
 public:
 	Sphere(float radius, int numeSideFacets);
 	virtual void Update(float dt);
+	virtual void Create(IDirect3DDevice9* gd3dDevice);
 
 protected:
 	virtual void buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice);

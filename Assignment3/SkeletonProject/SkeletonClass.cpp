@@ -68,13 +68,14 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	float yOffset = -5;
 	//Create the planet
 	int counter = 0;
+	
 	m_Objects.push_back(new Sphere(10, 20));
     m_Objects[counter]->Create( gd3dDevice );
 	m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
 	//m_Objects[counter]->scale(10, 10, 10);
 	counter++;
-
+	
 	m_Objects.push_back(new Torus(5, .5, 10, 10));
 	m_Objects[counter]->Create(gd3dDevice);
 	m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
@@ -119,7 +120,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
 	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
-
+	
 	InitAllVertexDeclarations();
 }
 
@@ -136,6 +137,16 @@ SkeletonClass::~SkeletonClass()
 
 bool SkeletonClass::checkDeviceCaps()
 {
+	D3DCAPS9 caps;
+	HR(gd3dDevice->GetDeviceCaps(&caps));
+
+	//Check for vertex shader version 2.0 suppport
+	if (caps.VertexShaderVersion < D3DVS_VERSION(2, 0))
+		return false;
+	//Check pixel shader support;
+	if (caps.PixelShaderVersion < D3DPS_VERSION(2, 0))
+		return false;
+
 	return true;
 }
 

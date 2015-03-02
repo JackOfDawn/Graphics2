@@ -10,6 +10,15 @@ numSideFacets(numSideFacets)
 
 }
 
+void Sphere::Create(IDirect3DDevice9* gd3dDevice)
+{	
+	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
+	HR(D3DXCreateSphere(gd3dDevice, radius, numSideFacets / 2, numSideFacets / 2, &m_Mesh, 0));
+	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
+	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
+	m_NumVertices = m_Mesh->GetNumVertices();
+	m_NumTriangles = m_Mesh->GetNumFaces();
+}
 void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
 	const int NUM_VERTICIES = numSideFacets * numSideFacets + 2 + numSideFacets; //Add 2 for the top and the bottom

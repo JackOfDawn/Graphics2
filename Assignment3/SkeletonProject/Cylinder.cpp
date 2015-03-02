@@ -11,6 +11,16 @@ sideFacetsNum(sideFacetsNum)
 {
 }
 
+void Cylinder::Create(IDirect3DDevice9* gd3dDevice)
+{	
+	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
+	HR(D3DXCreateCylinder(gd3dDevice, radius, radius, height, sideFacetsNum, sideFacetsNum / 2, &m_Mesh, 0));
+	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
+	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
+	m_NumVertices = m_Mesh->GetNumVertices();
+	m_NumTriangles = m_Mesh->GetNumFaces();
+}
+
 void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
 	const int NUM_VERTICES = sideFacetsNum * 2 + 2; // 2 centerpoints

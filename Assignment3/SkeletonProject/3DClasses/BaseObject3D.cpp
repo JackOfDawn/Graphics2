@@ -14,6 +14,7 @@ BaseObject3D::BaseObject3D(void)
 {
     m_VertexBuffer = NULL;
     m_IndexBuffer = NULL;
+	m_Mesh = NULL;
 
     D3DXMatrixIdentity(&m_World);
 }
@@ -51,7 +52,14 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
 	HR(gd3dDevice->SetTransform(D3DTS_PROJECTION, &projection));	
     
     // Send to render
-    HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_NumVertices, 0, m_NumTriangles));
+	if (m_Mesh)
+	{
+		HR(m_Mesh->DrawSubset(0));
+	}
+	else
+	{
+		HR(gd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_NumVertices, 0, m_NumTriangles));
+	}
 }
 
 //-----------------------------------------------------------------------------

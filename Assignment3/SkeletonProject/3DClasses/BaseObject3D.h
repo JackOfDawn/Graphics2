@@ -29,6 +29,7 @@ protected:
 
 	IDirect3DVertexBuffer9*     m_VertexBuffer;
 	IDirect3DIndexBuffer9*      m_IndexBuffer;
+	ID3DXMesh*					m_Mesh;
 
 	int m_NumVertices;
 	int m_NumTriangles;

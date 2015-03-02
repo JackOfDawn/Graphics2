@@ -11,11 +11,23 @@ sideFacetsNum(sideFacetsNum)
 {
 }
 
+
+void Cone::Create(IDirect3DDevice9* gd3dDevice)
+{	
+	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
+	HR(D3DXCreateCylinder(gd3dDevice, radius, 0, height, sideFacetsNum / 2, sideFacetsNum / 2, &m_Mesh, 0));
+	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
+	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
+	m_NumVertices = m_Mesh->GetNumVertices();
+	m_NumTriangles = m_Mesh->GetNumFaces();
+}
+
 void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {
+
 	const int NUM_VERTICES = sideFacetsNum + 1 + 1; // Add 1 for top point, one for the center
 	m_NumVertices = NUM_VERTICES;
-
+	
 	HR(gd3dDevice->CreateVertexBuffer(NUM_VERTICES * sizeof(VertexPos), D3DUSAGE_WRITEONLY,
 		0, D3DPOOL_MANAGED, &m_VertexBuffer, 0));
 
