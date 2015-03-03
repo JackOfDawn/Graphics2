@@ -194,6 +194,10 @@ void SkeletonClass::updateScene(float dt)
 		mCameraRotationX = 1.999f * D3DX_PI;
 
 	bool newKeyO = gDInput->keyDown(DIKEYBOARD_O);
+	bool newKeyT = gDInput->keyDown(DIKEYBOARD_T);
+	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
+	bool newKeyS = gDInput->keyDown(DIKEYBOARD_S);
+	bool newKeyD = gDInput->keyDown(DIKEYBOARD_D);
 	if (!oldKeyO && newKeyO)
 	{
 		if (++m_CurrentObjectIter == m_Objects.end())
@@ -201,8 +205,32 @@ void SkeletonClass::updateScene(float dt)
 			m_CurrentObjectIter = m_Objects.begin();
 		}
 	}
+	if (!oldKeyT && newKeyT)
+	{
+		// Remove textures
+		for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it)
+		{
+			(*it)->ToggleDrawWithTexture();
+		}
+	}
+	if (!oldKeyW && newKeyW)
+	{
+		// Switch to wireframe
+	}
+	if (!oldKeyS && newKeyS)
+	{
+		// Turn off specular (is this possible?)
+	}
+	if (!oldKeyD && newKeyD)
+	{
+		// Turn off diffuse (is this possible?)
+	}
 
 	oldKeyO = newKeyO;
+	oldKeyT = newKeyT;
+	oldKeyW = newKeyW;
+	oldKeyS = newKeyS;
+	oldKeyD = newKeyD;
 
 
 	for each (BaseObject3D* shape in m_Objects)

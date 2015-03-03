@@ -53,6 +53,10 @@ private:
     std::vector<BaseObject3D*>      m_Objects;
 	std::vector<BaseObject3D*>::iterator m_CurrentObjectIter;
 	bool oldKeyO;
+	bool oldKeyT;
+	bool oldKeyW;
+	bool oldKeyS;
+	bool oldKeyD;
 };
 //=============================================================================
 #endif // _SKELETON_CLASS_H_

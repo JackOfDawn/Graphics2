@@ -15,6 +15,7 @@ BaseObject3D::BaseObject3D(void)
     m_VertexBuffer = NULL;
     m_IndexBuffer = NULL;
 	m_Mesh = NULL;
+	m_DrawWithTexture = true;
 
     D3DXMatrixIdentity(&m_World);
 }
@@ -54,7 +55,7 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
     // Send to render
 	if (m_Mesh)
 	{
-		if (m_Material)
+		if (m_DrawWithTexture && m_Mesh)
 		{
 			D3DXMATRIX viewProjMat = view * projection;
 			m_Material->Update(m_World, viewProjMat);

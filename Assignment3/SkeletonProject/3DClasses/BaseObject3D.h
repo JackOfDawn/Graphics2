@@ -39,6 +39,8 @@ protected:
 	int m_NumVertices;
 	int m_NumTriangles;
 
+	bool m_DrawWithTexture;
+
 
 protected:
     // Replace the code in the following methods
@@ -85,6 +87,7 @@ public:
     virtual void Create( IDirect3DDevice9* gd3dDevice );
 	virtual void Update(float dt);
     virtual void Render( IDirect3DDevice9* gd3dDevice, D3DXMATRIX& view, D3DXMATRIX& projection );
+	void ToggleDrawWithTexture() { m_DrawWithTexture = !m_DrawWithTexture; }
 	void SetUpUV(std::function<D3DXVECTOR2(VertexPos)> f);
 };
 //=============================================================================

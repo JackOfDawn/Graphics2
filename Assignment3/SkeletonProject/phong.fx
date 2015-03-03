@@ -62,7 +62,9 @@ VS_OUTPUT Default_DirectX_Effect_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
 
 
 
-
+bool useSpecular;
+bool useDiffuse;
+bool useTexture;
 float3 dirLightDir
 <
    string UIName = "dirLightDir";
@@ -136,19 +138,28 @@ struct Default_DirectX_Effect_Pass_0_Pixel_Shader_VS_OUTPUT
 float4 Default_DirectX_Effect_Pass_0_Pixel_Shader_ps_main(Default_DirectX_Effect_Pass_0_Pixel_Shader_VS_OUTPUT Input) : COLOR0
 {   
    //normalize all the vectors
-   float3 light = normalize(-dirLightDir);
-   float3 view = normalize(Input.view);
-   float3 normal = normalize(Input.normal);
-   
-   //calculate halfvector
-   float3 halfway = normalize(light + view);
-   
-   //calculate ambient reflection
-   float4 ambient = materialAmbient; 
-   //calculate diffuse 
-   float3 diffuse = saturate(dot(normal, light)) * materialDiffuse.rgb;
+	float3 light = normalize(-dirLightDir);
+	float3 view = normalize(Input.view);
+	float3 normal = normalize(Input.normal);
+
+	//calculate halfvector
+	float3 halfway = normalize(light + view);
+
+	//calculate ambient reflection
+	float4 ambient = materialAmbient;
+	//calculate diffuse 
+	float3 diffuse = float3(0.0f, 0.0f, 0.0f);
+	if (useDiffuse)
+	{
+		diffuse = saturate(dot(normal, light)) * materialDiffuse.rgb;
+	}
    //calc specular
-   float3 specular = pow(saturate(dot(normal, halfway)), materialPower) * materialSpecular;
+   float3 specular = float3(0.0f, 0.0f, 0.0f);
+	   if (useSpecular)
+	   {
+
+	   }
+   specular = pow(saturate(dot(normal, halfway)), materialPower) * materialSpecular;
    //fetch texturee coord
    float2 texCoord = Input.texCoord;
    
