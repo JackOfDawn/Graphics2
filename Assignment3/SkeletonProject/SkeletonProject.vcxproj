@@ -115,6 +115,7 @@
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="GfxStats.h" />
     <ClInclude Include="PhongMaterial.h" />
+    <ClInclude Include="RenderOptions.h" />
     <ClInclude Include="SkeletonClass.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Teapot.h" />

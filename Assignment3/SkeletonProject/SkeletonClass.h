@@ -19,7 +19,7 @@
 #pragma once
 //=============================================================================
 #include "d3dApp.h"
-
+#include "RenderOptions.h"
 #include <vector>
 //=============================================================================
 class BaseObject3D;
@@ -52,7 +52,15 @@ private:
 
     std::vector<BaseObject3D*>      m_Objects;
 	std::vector<BaseObject3D*>::iterator m_CurrentObjectIter;
+	
 	bool oldKeyO;
+	bool oldKeyT;
+	bool oldKeyW;
+	bool oldKeyD;
+	bool oldKeyS;
+	bool oldKeyR;
+
+	RenderOptions renderOptions;
 };
 //=============================================================================
 #endif // _SKELETON_CLASS_H_

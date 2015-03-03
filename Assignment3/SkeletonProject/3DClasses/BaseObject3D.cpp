@@ -191,6 +191,7 @@ void BaseObject3D::rotateYawPitchRoll(float rx, float ry, float rz, float dt)
 
 void BaseObject3D::SetUpUV(std::function<D3DXVECTOR2(VertexPos)> f)
 {
+
 		D3DVERTEXELEMENT9 elem[MAXD3DDECLLENGTH];
 		UINT numElements;
 		VertexPos::Decl->GetDeclaration(elem, &numElements);

@@ -105,11 +105,14 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 		return;
 	}
 
-	D3DXMatrixTranspose(&worldMatIT, &worldMat);
+	D3DXMatrixTranspose(&worldMatIT, &worldMatIT);
 	HR(m_Effect->SetMatrix(m_MatWorldITHandle, &worldMatIT));
 	
 	D3DXVECTOR4 viewPosition(viewProjMat._41, viewProjMat._42, viewProjMat._43, viewProjMat._44);
 	HR(m_Effect->SetVector(m_ViewPositionHandle, &viewPosition));
+	D3DXVECTOR3 lightPos( viewProjMat._41, 1, viewProjMat._42) ;
+
+	HR(m_Effect->SetFloatArray(m_LightPosWHandle, lightPos, 3));
 
 	HR(m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat));
 	HR(m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat));
