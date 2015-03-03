@@ -208,7 +208,6 @@ void SkeletonClass::updateScene(float dt)
 	}
 	if (!oldKeyT && newKeyT)
 	{
-		// Remove textures
 		renderOptions.textureOn = !renderOptions.textureOn;
 	}
 	if (!oldKeyW && newKeyW)
