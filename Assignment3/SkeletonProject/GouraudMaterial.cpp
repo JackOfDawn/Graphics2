@@ -1,12 +1,10 @@
-#include "PhongMaterial.h"
-#include "RenderOptions.h"
-#include <d3d9.h>
+#include "GouraudMaterial.h"
 #include <assert.h>
 
-PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
+GouraudMaterial::GouraudMaterial(IDirect3DDevice9* device)
 {
 	ID3DXBuffer* errorBuffer = nullptr;
-	HRESULT result = D3DXCreateEffectFromFile(device, "phong.fx", NULL, NULL, D3DXSHADER_DEBUG | D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &m_Effect, &errorBuffer);
+	HRESULT result = D3DXCreateEffectFromFile(device, "Gouraud.fx", NULL, NULL, D3DXSHADER_DEBUG | D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &m_Effect, &errorBuffer);
 
 	if (errorBuffer)
 	{
@@ -21,7 +19,6 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	m_SpecularColor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 	m_Shininess = 89.0f;
 
-	// Set up handles
 	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
 	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
 
@@ -50,6 +47,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	}
 
 	{
+
 		m_SpecularColHandle = m_Effect->GetParameterByName(NULL, "materialSpecular");
 		m_Effect->SetFloatArray(m_SpecularColHandle, (FLOAT*)m_SpecularColor, 3);
 	}
@@ -75,7 +73,6 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 		}
 	}
 
-	// Vertex shader handles
 	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
 	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
 	m_MatWorldITHandle = m_Effect->GetParameterByName(NULL, "matWorldIT");
@@ -90,17 +87,17 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	assert(m_UseTextureHandle != NULL);
 }
 
-PhongMaterial::~PhongMaterial()
+GouraudMaterial::~GouraudMaterial(void)
 {
-	// eh.
+
 }
 
-void PhongMaterial::ConnectToEffect(ID3DXEffect* effect)
+void GouraudMaterial::ConnectToEffect(ID3DXEffect* effect)
 {
 	m_Effect = effect;
 }
 
-void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos)
+void GouraudMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos)
 {
 	m_WorldMat = worldMat;
 	m_ViewProjectionMat = worldMat * viewProjMat;
@@ -127,7 +124,7 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVE
 	HR(m_Effect->CommitChanges());
 }
 
-void PhongMaterial::Render(ID3DXBaseMesh* mesh, RenderOptions options)
+void GouraudMaterial::Render(ID3DXBaseMesh* mesh, RenderOptions options)
 {
 	UINT passes = 0;
 	D3DXHANDLE technique = m_Effect->GetTechniqueByName("Default_DirectX_Effect");

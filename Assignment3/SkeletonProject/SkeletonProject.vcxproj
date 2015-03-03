@@ -97,6 +97,7 @@
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="GfxStats.cpp" />
+    <ClCompile Include="GouraudMaterial.cpp" />
     <ClCompile Include="PhongMaterial.cpp" />
     <ClCompile Include="SkeletonClass.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="GfxStats.h" />
+    <ClInclude Include="GouraudMaterial.h" />
     <ClInclude Include="PhongMaterial.h" />
     <ClInclude Include="RenderOptions.h" />
     <ClInclude Include="SkeletonClass.h" />

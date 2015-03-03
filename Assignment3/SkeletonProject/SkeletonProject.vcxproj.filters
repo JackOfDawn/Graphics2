@@ -31,6 +31,9 @@
     <ClCompile Include="PhongMaterial.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
+    <ClCompile Include="GouraudMaterial.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -65,6 +68,9 @@
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="RenderOptions.h" />
+    <ClInclude Include="GouraudMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shapes">

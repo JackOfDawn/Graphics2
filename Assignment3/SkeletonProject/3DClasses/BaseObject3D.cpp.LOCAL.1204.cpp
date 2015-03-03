@@ -9,14 +9,13 @@
 #include "BaseObject3D.h"
 #include "Vertex.h"
 #include "../GfxStats.h"
-#include "../PhongMaterial.h"
-#include "../GouraudMaterial.h"
 //=============================================================================
 BaseObject3D::BaseObject3D(void)
 {
     m_VertexBuffer = NULL;
     m_IndexBuffer = NULL;
 	m_Mesh = NULL;
+	m_DrawWithTexture = true;
 
     D3DXMatrixIdentity(&m_World);
 }
@@ -37,7 +36,7 @@ void BaseObject3D::Create( IDirect3DDevice9* gd3dDevice )
 
 //-----------------------------------------------------------------------------
 void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
-    D3DXMATRIX& view, D3DXMATRIX& projection, D3DXVECTOR3& camPos, RenderOptions options )
+    D3DXMATRIX& view, D3DXMATRIX& projection, RenderOptions options )
 {
     // Update the statistics singlton class
     GfxStats::GetInstance()->addVertices(m_NumVertices);
@@ -56,19 +55,11 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
     // Send to render
 	if (m_Mesh)
 	{
-		if (m_PhongMaterial != nullptr && m_GouraudMaterial != nullptr)
+		if (m_DrawWithTexture && m_Mesh)
 		{
 			D3DXMATRIX viewProjMat = view * projection;
-			if (options.phongShader)
-			{
-				m_PhongMaterial->Update(m_World, viewProjMat, camPos);
-				m_PhongMaterial->Render(m_Mesh, options);
-			}
-			else
-			{
-				m_GouraudMaterial->Update(m_World, viewProjMat, camPos);
-				m_GouraudMaterial->Render(m_Mesh, options);
-			}
+			m_Material->Update(m_World, viewProjMat);
+			m_Material->Render(m_Mesh, options);
 		}
 		//else
 			//HR(m_Mesh->DrawSubset(0));

@@ -78,7 +78,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//Create the planet
 	int counter = 0;
 	
-	m_Objects.push_back(new Sphere(10, 50));
+	m_Objects.push_back(new Sphere(10, 10));
     m_Objects[counter]->Create( gd3dDevice );
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
@@ -198,6 +198,7 @@ void SkeletonClass::updateScene(float dt)
 	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
 	bool newKeyS = gDInput->keyDown(DIKEYBOARD_S);
 	bool newKeyD = gDInput->keyDown(DIKEYBOARD_D);
+	bool newKeyR = gDInput->keyDown(DIKEYBOARD_R);
 	if (!oldKeyO && newKeyO)
 	{
 		if (++m_CurrentObjectIter == m_Objects.end())
@@ -208,10 +209,6 @@ void SkeletonClass::updateScene(float dt)
 	if (!oldKeyT && newKeyT)
 	{
 		// Remove textures
-		for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it)
-		{
-			(*it)->ToggleDrawWithTexture();
-		}
 		renderOptions.textureOn = !renderOptions.textureOn;
 	}
 	if (!oldKeyW && newKeyW)
@@ -229,12 +226,17 @@ void SkeletonClass::updateScene(float dt)
 		// Turn off diffuse (is this possible?)
 		renderOptions.diffuseOn = !renderOptions.diffuseOn;
 	}
+	if (!oldKeyR && newKeyR)
+	{
+		renderOptions.phongShader = !renderOptions.phongShader;
+	}
 
 	oldKeyO = newKeyO;
 	oldKeyT = newKeyT;
 	oldKeyW = newKeyW;
 	oldKeyS = newKeyS;
 	oldKeyD = newKeyD;
+	oldKeyR = newKeyR;
 
 
 
@@ -272,16 +274,6 @@ void SkeletonClass::drawScene()
 		HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	}
     // Render all the objects
-	/*
-	for (m_CurrentObjectIter = m_Objects.begin(); m_CurrentObjectIter != m_Objects.end(); ++m_CurrentObjectIter)
-	{
-		(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj);
-	}
-    for ( unsigned int obj=0 ; obj<m_Objects.size() ; obj++ )
-    {
-        m_Objects[obj]->Render( gd3dDevice, mView, mProj );
-    }
-	*/
 	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj, cameraPos, renderOptions);
 
     // display the render statistics

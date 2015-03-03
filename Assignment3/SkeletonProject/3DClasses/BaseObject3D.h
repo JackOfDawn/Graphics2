@@ -18,6 +18,8 @@
 #include "../BaseMaterial.h"
 #include "Vertex.h"
 #include "../RenderOptions.h"
+#include "../GouraudMaterial.h"
+#include "../PhongMaterial.h"
 
 #include "../d3dUtil.h"
 //=============================================================================
@@ -35,12 +37,11 @@ protected:
 	IDirect3DVertexBuffer9*     m_VertexBuffer;
 	IDirect3DIndexBuffer9*      m_IndexBuffer;
 	ID3DXMesh*					m_Mesh;
-	std::unique_ptr<BaseMaterial> m_Material;
+	std::unique_ptr<BaseMaterial> m_PhongMaterial;
+	std::unique_ptr<BaseMaterial> m_GouraudMaterial;
 
 	int m_NumVertices;
 	int m_NumTriangles;
-
-	bool m_DrawWithTexture;
 
 
 protected:

@@ -113,18 +113,13 @@ VS_OUTPUT Effect_Group_1_Effect1_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
 }
 
 
-
+bool useSpecular;
+bool useDiffuse;
+bool useTexture;
 
 texture texTexture;
 
-texture texTexture_Tex
-<
-   string ResourceName = "..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\Earth.jpg";
->;
-sampler sampTexture = sampler_state
-{
-   Texture = (texTexture_Tex);
-} = sampler_state {
+sampler sampTexture = sampler_state {
    Texture = (texTexture);
    };
 

@@ -1,6 +1,7 @@
 #include "Sphere.h"
 #include "3DClasses\Vertex.h"
 #include "PhongMaterial.h"
+#include "GouraudMaterial.h"
 
 #include <assert.h>
 
@@ -18,7 +19,8 @@ void Sphere::Create(IDirect3DDevice9* gd3dDevice)
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
-	m_Material.reset(new PhongMaterial(gd3dDevice));
+	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
+	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	// Set up new vertices and do texture mapping
 	SetUpUV([](VertexPos in) -> D3DXVECTOR2 {
