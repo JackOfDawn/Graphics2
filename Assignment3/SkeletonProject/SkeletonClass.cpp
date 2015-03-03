@@ -54,6 +54,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	oldKeyD = false;
 	oldKeyS = false;
 	oldKeyR = false;
+	cameraPos = D3DXVECTOR3(0, 0, 0);
 
 	renderOptions = RenderOptions();
 	
@@ -281,7 +282,7 @@ void SkeletonClass::drawScene()
         m_Objects[obj]->Render( gd3dDevice, mView, mProj );
     }
 	*/
-	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj, renderOptions);
+	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj, cameraPos, renderOptions);
 
     // display the render statistics
     GfxStats::GetInstance()->display();
@@ -297,7 +298,7 @@ void SkeletonClass::buildViewMtx()
 	float x = mCameraRadius * sinf(mCameraRotationY) * cosf(mCameraRotationX);
 	float y = mCameraRadius * sinf(mCameraRotationX);
 	float z = mCameraRadius * cosf(mCameraRotationY) * cosf(mCameraRotationX); 
-	D3DXVECTOR3 pos(x, y, z);
+	cameraPos = D3DXVECTOR3(x, y, z);
 
 	if (mCameraRotationX > D3DX_PI / 2 && mCameraRotationX < (3 * D3DX_PI) / 2)
 		mUp.y = -1;
@@ -307,7 +308,7 @@ void SkeletonClass::buildViewMtx()
 	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
 
 	
-	D3DXMatrixLookAtLH(&mView, &pos, &target, &mUp);
+	D3DXMatrixLookAtLH(&mView, &cameraPos, &target, &mUp);
 }
 
 void SkeletonClass::buildProjMtx()

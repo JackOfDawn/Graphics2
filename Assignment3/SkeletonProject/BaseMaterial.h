@@ -48,7 +48,7 @@ public:
     virtual ~BaseMaterial(void);
 
     virtual void ConnectToEffect( ID3DXEffect* effect ) = 0;
-    virtual void Update( D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat ) = 0; 
+    virtual void Update( D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos) = 0; 
 	virtual void Render(ID3DXBaseMesh* mesh, RenderOptions options) = 0;
 };
 //=============================================================================
