@@ -36,7 +36,7 @@ void BaseObject3D::Create( IDirect3DDevice9* gd3dDevice )
 
 //-----------------------------------------------------------------------------
 void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
-    D3DXMATRIX& view, D3DXMATRIX& projection )
+    D3DXMATRIX& view, D3DXMATRIX& projection, RenderOptions options )
 {
     // Update the statistics singlton class
     GfxStats::GetInstance()->addVertices(m_NumVertices);
@@ -59,7 +59,7 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
 		{
 			D3DXMATRIX viewProjMat = view * projection;
 			m_Material->Update(m_World, viewProjMat);
-			m_Material->Render(m_Mesh);
+			m_Material->Render(m_Mesh, options);
 		}
 		//else
 			//HR(m_Mesh->DrawSubset(0));

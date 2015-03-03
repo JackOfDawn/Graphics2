@@ -155,11 +155,10 @@ float4 Default_DirectX_Effect_Pass_0_Pixel_Shader_ps_main(Default_DirectX_Effect
 	}
    //calc specular
    float3 specular = float3(0.0f, 0.0f, 0.0f);
-	   if (useSpecular)
-	   {
-
-	   }
-   specular = pow(saturate(dot(normal, halfway)), materialPower) * materialSpecular;
+   if (useSpecular)
+   {
+	   specular = pow(saturate(dot(normal, halfway)), materialPower) * materialSpecular;
+   }
    //fetch texturee coord
    float2 texCoord = Input.texCoord;
    

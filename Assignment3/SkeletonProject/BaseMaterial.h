@@ -9,6 +9,7 @@
 //=============================================================================
 #pragma once
 #include "d3dApp.h"
+#include "RenderOptions.h"
 //=============================================================================
 class BaseMaterial
 {
@@ -37,6 +38,10 @@ protected:
     D3DXHANDLE          m_SpecularColHandle;       
     D3DXHANDLE          m_ShininessHandle;   
 
+	D3DXHANDLE			m_UseDiffuseHandle;
+	D3DXHANDLE			m_UseSpecularHandle;
+	D3DXHANDLE			m_UseTextureHandle;
+
 
 public:
     BaseMaterial(void);
@@ -44,7 +49,7 @@ public:
 
     virtual void ConnectToEffect( ID3DXEffect* effect ) = 0;
     virtual void Update( D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat ) = 0; 
-	virtual void Render(ID3DXBaseMesh* mesh) = 0;
+	virtual void Render(ID3DXBaseMesh* mesh, RenderOptions options) = 0;
 };
 //=============================================================================
 

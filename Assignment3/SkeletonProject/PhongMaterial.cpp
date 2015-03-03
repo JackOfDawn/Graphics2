@@ -1,4 +1,5 @@
 #include "PhongMaterial.h"
+#include "RenderOptions.h"
 #include <d3d9.h>
 #include <assert.h>
 
@@ -81,6 +82,14 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
 	m_MatWorldITHandle = m_Effect->GetParameterByName(NULL, "matWorldIT");
 	m_ViewPositionHandle = m_Effect->GetParameterByName(NULL, "viewPosition");
+
+	// Pixel shader handles
+	m_UseDiffuseHandle = m_Effect->GetParameterByName(NULL, "useDiffuse");
+	assert(m_UseDiffuseHandle != NULL);
+	m_UseSpecularHandle = m_Effect->GetParameterByName(NULL, "useSpecular");
+	assert(m_UseSpecularHandle != NULL);
+	m_UseTextureHandle = m_Effect->GetParameterByName(NULL, "useTexture");
+	assert(m_UseTextureHandle != NULL);
 }
 
 PhongMaterial::~PhongMaterial()
@@ -120,10 +129,15 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 	HR(m_Effect->CommitChanges());
 }
 
-void PhongMaterial::Render(ID3DXBaseMesh* mesh)
+void PhongMaterial::Render(ID3DXBaseMesh* mesh, RenderOptions options)
 {
 	UINT passes = 0;
 	D3DXHANDLE technique = m_Effect->GetTechniqueByName("Default_DirectX_Effect");
+
+	m_Effect->SetBool(m_UseDiffuseHandle, options.diffuseOn);
+	m_Effect->SetBool(m_UseSpecularHandle, options.specularOn);
+	m_Effect->SetBool(m_UseTextureHandle, options.textureOn);
+
 	m_Effect->SetTechnique(technique);
 	m_Effect->Begin(&passes, NULL);
 	for (UINT pass = 0; pass < passes; ++pass)

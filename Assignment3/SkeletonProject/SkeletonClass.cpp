@@ -211,18 +211,22 @@ void SkeletonClass::updateScene(float dt)
 		{
 			(*it)->ToggleDrawWithTexture();
 		}
+		renderOptions.textureOn = !renderOptions.textureOn;
 	}
 	if (!oldKeyW && newKeyW)
 	{
-		// Switch to wireframe
+		//WireFrame
+		renderOptions.wireFrameOn = !renderOptions.wireFrameOn;
 	}
 	if (!oldKeyS && newKeyS)
 	{
 		// Turn off specular (is this possible?)
+		renderOptions.specularOn = !renderOptions.specularOn;
 	}
 	if (!oldKeyD && newKeyD)
 	{
 		// Turn off diffuse (is this possible?)
+		renderOptions.diffuseOn = !renderOptions.diffuseOn;
 	}
 
 	oldKeyO = newKeyO;
@@ -231,13 +235,6 @@ void SkeletonClass::updateScene(float dt)
 	oldKeyS = newKeyS;
 	oldKeyD = newKeyD;
 
-	//WireFrame
-	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
-	if (!oldKeyW && newKeyW)
-	{
-		renderOptions.wireFrameOn = !renderOptions.wireFrameOn;
-	}
-	oldKeyW = newKeyW;
 
 
 	for each (BaseObject3D* shape in m_Objects)
@@ -284,7 +281,7 @@ void SkeletonClass::drawScene()
         m_Objects[obj]->Render( gd3dDevice, mView, mProj );
     }
 	*/
-	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj);
+	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj, renderOptions);
 
     // display the render statistics
     GfxStats::GetInstance()->display();
