@@ -49,6 +49,14 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 : D3DApp(hInstance, winCaption, devType, requestedVP)
 {
 	oldKeyO = false;
+	oldKeyT = false;
+	oldKeyW = false;
+	oldKeyD = false;
+	oldKeyS = false;
+	oldKeyR = false;
+
+	renderOptions = RenderOptions();
+	
 	if(!checkDeviceCaps())
 	{
 		MessageBox(0, "checkDeviceCaps() Failed", 0, 0);
@@ -58,8 +66,8 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	HR(gd3dDevice->SetVertexDeclaration(VertexPos::Decl));
 
 	mCameraRadius    = 50.0f;
-	mCameraRotationY = 1.2 * D3DX_PI;
-	mCameraRotationX = D3DX_PI;
+	mCameraRotationY = 0;
+	mCameraRotationX = 0;
 	//mCameraHeight    = 5.0f;
 	mUp.x = 0;
 	mUp.y = 1;
@@ -69,14 +77,14 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//Create the planet
 	int counter = 0;
 	
-	m_Objects.push_back(new Sphere(10, 20));
+	m_Objects.push_back(new Sphere(10, 50));
     m_Objects[counter]->Create( gd3dDevice );
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
 	//m_Objects[counter]->scale(10, 10, 10);
 	counter++;
 	
-	m_Objects.push_back(new Box(5, 5, 5));
+	m_Objects.push_back(new Box(10, 10, 10));
 	m_Objects[counter]->Create(gd3dDevice);
 	//m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
@@ -86,40 +94,31 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//CreatetWoRings
 	m_Objects.push_back(new Teapot());
 	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->scale(5, 5, 5);
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
 
 	//create Cylinder Core
-	m_Objects.push_back(new Cylinder(2, 20, 10));
+	m_Objects.push_back(new Cylinder(10, 10, 50));
 	m_Objects[counter]->Create(gd3dDevice);
 	//m_Objects[counter]->translateTo(0, 12 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 2);
 
 	counter++;
-
-	//create Cone to balance sphere
-	m_Objects.push_back(new Cone(10, 5, 20));
-	m_Objects[counter]->Create(gd3dDevice);
-	//m_Objects[counter]->translateTo(0, 18 + yOffset, 0);
-	counter++;
 	//create mini cones
-	m_Objects.push_back(new Cone(4, 1, 10));
+	m_Objects.push_back(new Cone(10, 5, 30));
 	m_Objects[counter]->Create(gd3dDevice);
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
 	counter++;	
-	//create mini cones
-	m_Objects.push_back(new Cone(4, 1, 10));
-	m_Objects[counter]->Create(gd3dDevice);
-	//m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
-	counter++;
+	
 	onResetDevice();
 
 	//other ring
-	m_Objects.push_back(new Torus(2, .5, 10, 10));
+	m_Objects.push_back(new Torus(2, 10, 50, 40));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
-	m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
+	//m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
+	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
 
 	m_CurrentObjectIter = m_Objects.begin();
@@ -232,6 +231,14 @@ void SkeletonClass::updateScene(float dt)
 	oldKeyS = newKeyS;
 	oldKeyD = newKeyD;
 
+	//WireFrame
+	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
+	if (!oldKeyW && newKeyW)
+	{
+		renderOptions.wireFrameOn = !renderOptions.wireFrameOn;
+	}
+	oldKeyW = newKeyW;
+
 
 	for each (BaseObject3D* shape in m_Objects)
 	{
@@ -258,9 +265,14 @@ void SkeletonClass::drawScene()
 	HR(gd3dDevice->BeginScene());
 
     // Set render statws for the entire scene here:
-	HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
-	//HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
-
+	if (!renderOptions.wireFrameOn)
+	{
+		HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	}
+	else
+	{
+		HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	}
     // Render all the objects
 	/*
 	for (m_CurrentObjectIter = m_Objects.begin(); m_CurrentObjectIter != m_Objects.end(); ++m_CurrentObjectIter)

@@ -22,10 +22,11 @@ void Sphere::Create(IDirect3DDevice9* gd3dDevice)
 
 	// Set up new vertices and do texture mapping
 	SetUpUV([](VertexPos in) -> D3DXVECTOR2 {
-		double Rxz = sqrt(pow(in.pos.x, 2) + pow(in.pos.z, 2));
+		double Rxz = sqrt(pow(in.pos.y, 2) + pow(in.pos.x, 2));
 		D3DXVECTOR2 out;
-		out.x = (FLOAT)((atan(in.pos.x / in.pos.z) / D3DX_PI) + 0.5);
-		out.y = (FLOAT)((atan(in.pos.y / Rxz) / D3DX_PI) + 0.5);
+		out.x = (FLOAT)((atan2f(in.pos.y , in.pos.x) / (2 * D3DX_PI)) + 0.5);
+		out.y = (FLOAT)((atan(in.pos.z / Rxz) / D3DX_PI) + 0.5);
+		
 		return out;
 	});
 }
