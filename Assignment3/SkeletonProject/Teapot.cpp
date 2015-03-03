@@ -16,6 +16,14 @@ void Teapot::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_Material.reset(new PhongMaterial(gd3dDevice));
+
+	SetUpUV([this](VertexPos in){
+		D3DXVECTOR3 out;
+		out.x = in.pos.x;
+		out.y = - in.pos.y + .5;
+		return out;
+	});
+
 }
 
 void Teapot::Update(float dt)
