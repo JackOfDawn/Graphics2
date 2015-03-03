@@ -1,5 +1,6 @@
 #include "3DClasses\Vertex.h"
 #include "Torus.h"
+#include "PhongMaterial.h"
 #include <assert.h>
 
 Torus::Torus(float radius1, float radius2, int numSideFacets1, int numSideFacets2) :
@@ -20,6 +21,7 @@ void Torus::Create(IDirect3DDevice9* gd3dDevice)
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
+	m_Material.reset(new PhongMaterial(gd3dDevice));
 }
 
 void Torus::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

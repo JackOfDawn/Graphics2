@@ -101,17 +101,17 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//create Cone to balance sphere
 	m_Objects.push_back(new Cone(10, 5, 20));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 18 + yOffset, 0);
+	//m_Objects[counter]->translateTo(0, 18 + yOffset, 0);
 	counter++;
 	//create mini cones
 	m_Objects.push_back(new Cone(4, 1, 10));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
+	//m_Objects[counter]->translateTo(0, 0 + yOffset, -15);
 	counter++;	
 	//create mini cones
 	m_Objects.push_back(new Cone(4, 1, 10));
 	m_Objects[counter]->Create(gd3dDevice);
-	m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
+	//m_Objects[counter]->translateTo(0, 0 + yOffset, 15);
 	counter++;
 	onResetDevice();
 

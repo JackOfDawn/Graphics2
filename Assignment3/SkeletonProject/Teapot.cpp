@@ -1,4 +1,5 @@
 #include <assert.h>
+#include "PhongMaterial.h"
 #include "Teapot.h"
 #include "3DClasses\BaseObject3D.h"
 
@@ -14,6 +15,7 @@ void Teapot::Create(IDirect3DDevice9* gd3dDevice)
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
+	m_Material.reset(new PhongMaterial(gd3dDevice));
 }
 
 void Teapot::Update(float dt)

@@ -41,7 +41,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 	{
 		D3DXHANDLE hMaterialAmbient = m_Effect->GetParameterByName(NULL, "materialAmbient");
-		D3DXVECTOR4 materialAmbient(1.0f, 1.0f, 1.0f, 1.0f);
+		D3DXVECTOR4 materialAmbient(0.9f, 0.9f, 0.9f, 1.0f);
 		m_Effect->SetVector(hMaterialAmbient, &materialAmbient);
 	}
 
