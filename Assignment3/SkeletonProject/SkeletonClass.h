@@ -61,6 +61,8 @@ private:
 	bool oldKeyR;
 
 	RenderOptions renderOptions;
+
+	D3DXVECTOR3 cameraPos;
 };
 //=============================================================================
 #endif // _SKELETON_CLASS_H_

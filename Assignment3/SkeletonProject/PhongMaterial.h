@@ -9,7 +9,7 @@ public:
 	virtual ~PhongMaterial(void);
 
 	virtual void ConnectToEffect(ID3DXEffect* effect);
-	virtual void Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat);
+	virtual void Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos);
 	virtual void Render(ID3DXBaseMesh* mesh);
 
 protected:

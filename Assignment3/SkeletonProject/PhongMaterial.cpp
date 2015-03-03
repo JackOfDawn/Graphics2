@@ -93,7 +93,7 @@ void PhongMaterial::ConnectToEffect(ID3DXEffect* effect)
 	m_Effect = effect;
 }
 
-void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
+void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos)
 {
 	m_WorldMat = worldMat;
 	m_ViewProjectionMat = worldMat * viewProjMat;
@@ -104,15 +104,15 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat)
 		::MessageBox(0, "Could not invert matrix", 0, 0);
 		return;
 	}
-
+	//D3DXVECTOR3 lightPos(camPos.x, -1, camPos.z);
 	D3DXMatrixTranspose(&worldMatIT, &worldMatIT);
 	HR(m_Effect->SetMatrix(m_MatWorldITHandle, &worldMatIT));
 	
 	D3DXVECTOR4 viewPosition(viewProjMat._41, viewProjMat._42, viewProjMat._43, viewProjMat._44);
 	HR(m_Effect->SetVector(m_ViewPositionHandle, &viewPosition));
-	D3DXVECTOR3 lightPos( viewProjMat._41, 1, viewProjMat._42) ;
+	
 
-	HR(m_Effect->SetFloatArray(m_LightPosWHandle, lightPos, 3));
+	HR(m_Effect->SetFloatArray(m_LightPosWHandle, -camPos, 3));
 
 	HR(m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat));
 	HR(m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat));
