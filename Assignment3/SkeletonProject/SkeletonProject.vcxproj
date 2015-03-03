@@ -123,13 +123,6 @@
     <ClInclude Include="Teapot.h" />
     <ClInclude Include="Torus.h" />
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="phong.fx">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default_DirectX_Effect</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
-    </FxCompile>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

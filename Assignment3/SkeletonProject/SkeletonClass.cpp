@@ -78,7 +78,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//Create the planet
 	int counter = 0;
 	
-	m_Objects.push_back(new Sphere(10, 10));
+	m_Objects.push_back(new Sphere(10, 50));
     m_Objects[counter]->Create( gd3dDevice );
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);

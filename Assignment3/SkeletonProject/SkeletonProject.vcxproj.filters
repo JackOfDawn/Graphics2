@@ -80,7 +80,4 @@
       <UniqueIdentifier>{520df58f-2cb4-4533-8a57-2302eb9549a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="phong.fx" />
-  </ItemGroup>
 </Project>
