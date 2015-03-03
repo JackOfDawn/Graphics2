@@ -21,6 +21,13 @@ void Cylinder::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_Material.reset(new PhongMaterial(gd3dDevice));
+
+	SetUpUV([this](VertexPos in){
+		D3DXVECTOR3 out;
+		out.x = in.pos.x/ radius;
+		out.y = (in.pos.y * .5) / (height) + .5;
+		return out;
+	});
 }
 
 void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

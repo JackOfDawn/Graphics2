@@ -207,11 +207,7 @@ void SkeletonClass::updateScene(float dt)
 	}
 	if (!oldKeyT && newKeyT)
 	{
-		// Remove textures
-		for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it)
-		{
-			(*it)->ToggleDrawWithTexture();
-		}
+
 		renderOptions.textureOn = !renderOptions.textureOn;
 	}
 	if (!oldKeyW && newKeyW)
