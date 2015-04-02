@@ -19,6 +19,7 @@
 #include <list>
 
 #include "SkeletonClass.h"
+#include "Skybox.h"
 #include "3DClasses\BaseObject3D.h"
 #include "3DClasses\Vertex.h"
 #include "Cone.h"
@@ -122,6 +123,9 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI/2, D3DX_PI / 2, D3DX_PI/4);
 	counter++;
 
+	m_SkyBox = new SkyBox(500, 500, 500);
+	m_SkyBox->Create(gd3dDevice);
+
 	m_CurrentObjectIter = m_Objects.begin();
 }
 
@@ -132,7 +136,7 @@ SkeletonClass::~SkeletonClass()
     for ( unsigned int obj=0 ; obj<m_Objects.size() ; obj++ )
         delete m_Objects[obj];
     m_Objects.clear();
-
+	delete m_SkyBox;
 	DestroyAllVertexDeclarations();
 }
 
@@ -273,6 +277,7 @@ void SkeletonClass::drawScene()
 		HR(gd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	}
     // Render all the objects
+	m_SkyBox->Render(gd3dDevice, mView, mProj, cameraPos, renderOptions);
 	(*m_CurrentObjectIter)->Render(gd3dDevice, mView, mProj, cameraPos, renderOptions);
 
     // display the render statistics

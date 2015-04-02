@@ -23,6 +23,7 @@
 #include <vector>
 //=============================================================================
 class BaseObject3D;
+class SkyBox;
 //=============================================================================
 class SkeletonClass : public D3DApp
 {
@@ -52,7 +53,8 @@ private:
 
     std::vector<BaseObject3D*>      m_Objects;
 	std::vector<BaseObject3D*>::iterator m_CurrentObjectIter;
-	
+	SkyBox* m_SkyBox;
+
 	bool oldKeyO;
 	bool oldKeyT;
 	bool oldKeyW;

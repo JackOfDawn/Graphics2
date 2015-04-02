@@ -15,4 +15,11 @@ private:
 	float depth;
 
 	IDirect3DCubeTexture9* envCubeTex;
+	ID3DXEffect* m_Effect;
+
+	//---------SKYBOX HANDLES--------
+	D3DXHANDLE			m_WorldMatHandle;
+	D3DXHANDLE			m_ViewMatHandle;
+	D3DXHANDLE			m_ProjectionHandle;
+	D3DXHANDLE			m_CameraPosHandle;
 };

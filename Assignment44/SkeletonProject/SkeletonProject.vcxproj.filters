@@ -34,9 +34,7 @@
     <ClCompile Include="GouraudMaterial.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DClasses\BaseObject3D.h" />
@@ -74,9 +72,7 @@
     <ClInclude Include="GouraudMaterial.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shapes">
