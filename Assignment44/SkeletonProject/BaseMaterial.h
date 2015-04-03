@@ -41,6 +41,8 @@ protected:
 	D3DXHANDLE			m_UseDiffuseHandle;
 	D3DXHANDLE			m_UseSpecularHandle;
 	D3DXHANDLE			m_UseTextureHandle;
+	D3DXHANDLE			m_UseReflectionHandle;
+	D3DXHANDLE			m_RSBlendHandle;
 
 
 public:

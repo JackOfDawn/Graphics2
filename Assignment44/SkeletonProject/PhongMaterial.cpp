@@ -60,8 +60,9 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	}
 
 	{
+		//set texture
 		IDirect3DTexture9* tex = nullptr;
-		D3DXCreateTextureFromFile(device, "Earth.jpg", &tex);
+		D3DXCreateTextureFromFile(device, "White.jpg", &tex);
 		if (!tex)
 		{
 			::MessageBox(0, "Couldn't load texture", 0, 0);
@@ -73,6 +74,22 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 			m_Effect->SetTexture(hTexture, tex);
 			tex->Release();
 		}
+
+		//set env texture
+		IDirect3DCubeTexture9* cubeTex = nullptr;
+		D3DXCreateCubeTextureFromFile(device, "Islands.dds", &cubeTex);
+		if (!cubeTex)
+		{
+			::MessageBox(0, "Couldn't load CUBE", 0, 0);
+		}
+		else
+		{
+			D3DXHANDLE hCubeTexture = m_Effect->GetParameterByName(NULL, "SkyBoxTexture");
+			assert(hCubeTexture != NULL);
+			m_Effect->SetTexture(hCubeTexture, cubeTex);
+			cubeTex->Release();
+		}
+
 	}
 
 	// Vertex shader handles
@@ -88,6 +105,10 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	assert(m_UseSpecularHandle != NULL);
 	m_UseTextureHandle = m_Effect->GetParameterByName(NULL, "useTexture");
 	assert(m_UseTextureHandle != NULL);
+	m_UseReflectionHandle = m_Effect->GetParameterByName(NULL, "useReflection");
+	assert(m_UseReflectionHandle != NULL);
+	m_RSBlendHandle = m_Effect->GetParameterByName(NULL, "RSBlend");
+	assert(m_RSBlendHandle != NULL);
 }
 
 PhongMaterial::~PhongMaterial()
@@ -119,7 +140,7 @@ void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVE
 	HR(m_Effect->SetVector(m_ViewPositionHandle, &viewPosition));
 	
 
-	HR(m_Effect->SetFloatArray(m_LightPosWHandle, -camPos, 3));
+	//HR(m_Effect->SetFloatArray(m_LightPosWHandle, -camPos, 3));
 
 	HR(m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat));
 	HR(m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat));
@@ -135,6 +156,8 @@ void PhongMaterial::Render(ID3DXBaseMesh* mesh, RenderOptions options)
 	m_Effect->SetBool(m_UseDiffuseHandle, options.diffuseOn);
 	m_Effect->SetBool(m_UseSpecularHandle, options.specularOn);
 	m_Effect->SetBool(m_UseTextureHandle, options.textureOn);
+	m_Effect->SetBool(m_UseReflectionHandle, options.reflectionOn);
+	m_Effect->SetFloat(m_RSBlendHandle, options.getBlend());
 
 	m_Effect->SetTechnique(technique);
 	m_Effect->Begin(&passes, NULL);

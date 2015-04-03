@@ -24,6 +24,7 @@ float4x4 matViewProjection : WorldViewProjection;
 float4x4 matWorldIT : WorldInverseTranspose;
 float4x4 matWorld : World;
 float4 viewPosition : ViewPosition;
+float RSBlend;
 
 struct VS_INPUT 
 {
@@ -39,6 +40,7 @@ struct VS_OUTPUT
    float2 texCoord :TEXCOORD0; //pixel texture coorinates
    float3 normal : TEXCOORD1; //pixel normal vector
    float3 view : TEXCOORD2; //pixel view vector
+   float3 reflection : TEXCOORD3; //reflectionvector?
 };
 
 VS_OUTPUT Default_DirectX_Effect_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
@@ -55,7 +57,7 @@ VS_OUTPUT Default_DirectX_Effect_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
    //calculate the view vector
    float3 worldPos = mul(Input.Position, matWorld).xyz;
    Output.view = viewPosition - worldPos;   
-   
+   Output.reflection = reflect(-normalize(Output.view), normalize(Output.normal));
    return( Output );
    
 }
@@ -65,6 +67,7 @@ VS_OUTPUT Default_DirectX_Effect_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
 bool useSpecular;
 bool useDiffuse;
 bool useTexture;
+bool useReflection;
 float3 dirLightDir
 <
    string UIName = "dirLightDir";
@@ -107,6 +110,8 @@ float materialPower
 > = float( 1.00 );
 texture texTexture;
 
+
+
 /*
 texture texTexture_Tex
 <
@@ -121,6 +126,17 @@ sampler S0 = sampler_state
    MagFilter = LINEAR;
    MipFilter = LINEAR;
 };
+
+Texture SkyBoxTexture;
+samplerCUBE SkyBoxSampler = sampler_state
+{
+	texture = <SkyBoxTexture>;
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = Mirror;
+	AddressV = Mirror;
+};
 /*
 sampler sampTexture = sampler_state{
    Texture = (texTexture);
@@ -132,6 +148,7 @@ struct Default_DirectX_Effect_Pass_0_Pixel_Shader_VS_OUTPUT
    float2 texCoord :TEXCOORD0; //pixel texture coorinates
    float3 normal : TEXCOORD1; //pixel normal vector
    float3 view : TEXCOORD2; //pixel view vector
+   float3 reflection : TEXCOORD3; // pixel reflection vector
 };
 
 
@@ -161,12 +178,16 @@ float4 Default_DirectX_Effect_Pass_0_Pixel_Shader_ps_main(Default_DirectX_Effect
    }
    //fetch texturee coord
    float2 texCoord = Input.texCoord;
-   
    //sample the texture
    float4 texColor = tex2D(S0, texCoord);
    //combine all color components
    float3 color = (saturate(ambient + diffuse) * texColor + specular) * dirLightColor;
    //calculate transp
+   if (useReflection)
+   {
+	   color = color * texCUBE(SkyBoxSampler, normalize(Input.reflection));
+   }
+
    float alpha = materialDiffuse.a * texColor.a;
    //return pixels color
    return float4(color, alpha);

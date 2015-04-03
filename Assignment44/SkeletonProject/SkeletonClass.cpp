@@ -55,6 +55,8 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	oldKeyD = false;
 	oldKeyS = false;
 	oldKeyR = false;
+	oldKeyPlus = false;
+	oldKeyMinus = false;
 	cameraPos = D3DXVECTOR3(0, 0, 0);
 
 	renderOptions = RenderOptions();
@@ -70,6 +72,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 	mCameraRadius    = 50.0f;
 	mCameraRotationY = 0;
 	mCameraRotationX = 0;
+	mRSBlend = .5f;
 	//mCameraHeight    = 5.0f;
 	mUp.x = 0;
 	mUp.y = 1;
@@ -197,12 +200,16 @@ void SkeletonClass::updateScene(float dt)
 	else if (mCameraRotationX < 0.0f)
 		mCameraRotationX = 1.999f * D3DX_PI;
 
+
+
 	bool newKeyO = gDInput->keyDown(DIKEYBOARD_O);
 	bool newKeyT = gDInput->keyDown(DIKEYBOARD_T);
 	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
 	bool newKeyS = gDInput->keyDown(DIKEYBOARD_S);
 	bool newKeyD = gDInput->keyDown(DIKEYBOARD_D);
 	bool newKeyR = gDInput->keyDown(DIKEYBOARD_R);
+	bool newKeyMinus = gDInput->keyDown(DIKEYBOARD_MINUS);
+	bool newKeyPlus = gDInput->keyDown(DIKEYBOARD_EQUALS);
 	if (!oldKeyO && newKeyO)
 	{
 		if (++m_CurrentObjectIter == m_Objects.end())
@@ -231,7 +238,7 @@ void SkeletonClass::updateScene(float dt)
 	}
 	if (!oldKeyR && newKeyR)
 	{
-		renderOptions.phongShader = !renderOptions.phongShader;
+		renderOptions.reflectionOn = !renderOptions.reflectionOn;
 	}
 
 	oldKeyO = newKeyO;
@@ -240,6 +247,10 @@ void SkeletonClass::updateScene(float dt)
 	oldKeyS = newKeyS;
 	oldKeyD = newKeyD;
 	oldKeyR = newKeyR;
+	if (mRSBlend > 1)
+		mRSBlend = 1;
+	else if (mRSBlend < 0)
+		mRSBlend = 0;
 
 
 

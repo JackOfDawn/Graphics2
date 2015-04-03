@@ -116,8 +116,15 @@ void GfxStats::display()
 	sprintf(buffer, "Frames Per Second = %.2f\n"
 		"Milliseconds Per Frame = %.4f\n"
 		"Triangle Count = %d\n"
-		"Vertex Count = %d", mFPS, mMilliSecPerFrame, mNumTris, mNumVertices);
+		"Vertex Count = %d\n"
+		"W - Switch between render and solid mode\n"
+		"T - Switch texture on/off\n"
+		"O - Switch Object\n"
+		"R - Switch Reflection on/off\n"
+		" -/+ reflection and specular blending\n"
+		"A / S Adjust strength of normal\n"
+		"1-7 Adjust coeffiecent of specular\n", mFPS, mMilliSecPerFrame, mNumTris, mNumVertices);
 
 	RECT R = {5, 5, 0, 0};
-	HR(mFont->DrawText(0, buffer, -1, &R, DT_NOCLIP, D3DCOLOR_XRGB(0,0,0)));
+	HR(mFont->DrawText(0, buffer, -1, &R, DT_NOCLIP, D3DCOLOR_XRGB(254,254,254)));
 }

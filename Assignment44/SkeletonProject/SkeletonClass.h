@@ -46,6 +46,7 @@ private:
 	float mCameraRotationX;
 	float mCameraRadius;
 	float mCameraHeight;
+	float mRSBlend;
 
 	D3DXMATRIX mView;
 	D3DXMATRIX mProj;
@@ -61,6 +62,8 @@ private:
 	bool oldKeyD;
 	bool oldKeyS;
 	bool oldKeyR;
+	bool oldKeyMinus;
+	bool oldKeyPlus;
 
 	RenderOptions renderOptions;
 

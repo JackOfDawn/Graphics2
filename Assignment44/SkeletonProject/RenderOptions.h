@@ -9,6 +9,8 @@ struct RenderOptions
 		specularOn	= true;
 		diffuseOn	= true;
 		phongShader = true;
+		reflectionOn = true;
+		blend = .5;
 	}
 public:
 	bool wireFrameOn;
@@ -16,4 +18,19 @@ public:
 	bool specularOn;
 	bool diffuseOn;
 	bool phongShader;
+	bool reflectionOn;
+	void setBlend(float value)
+	{
+		blend = value;
+		if (blend > 1)
+			blend = 1;
+		if (blend < 0)
+			blend = 0;
+	}
+	float getBlend()
+	{
+		return blend;
+	}
+private:
+	float blend;
 };
