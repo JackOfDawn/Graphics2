@@ -1036,7 +1036,7 @@ Pass 0]]></RmTextDataBlock></RmStringVariable>
     </RmRegistryBranch>
     <RmRegistryBranch NAME="WORKSPACE" API="" XML_VERSION="RenderMonkey 1.71">
      <RmStringVariable NAME="LAST_SAVE" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC=""><RmTextDataBlock TYPE="TEXT"><![CDATA[
-4/4/2015 1:16:2]]></RmTextDataBlock></RmStringVariable>
+4/4/2015 1:21:7]]></RmTextDataBlock></RmStringVariable>
      <RmStringVariable NAME="VERSION" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC=""><RmTextDataBlock TYPE="TEXT"><![CDATA[
 RenderMonkey Version 1.82 (build 322)]]></RmTextDataBlock></RmStringVariable>
      <RmStringVariable NAME="XML_VERSION" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC=""><RmTextDataBlock TYPE="TEXT"><![CDATA[
@@ -1047,7 +1047,7 @@ C:\Users\student\Desktop\Scott Barrett\Graphics2\Monkayyyy\]]></RmTextDataBlock>
    </RmRegistryBranch>
   </RmRegistryBranch>
   <RmDirectXEffect NAME="Textured Phong" API="D3D" ACTIVE_CAMERA="">
-   <RmMatrixVariable NAME="matViewProjection" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC="ViewProjection" VALUE_0="1.502295" VALUE_1="1.213160" VALUE_2="-1.161276" VALUE_3="-0.000012" VALUE_4="-0.709961" VALUE_5="1.992747" VALUE_6="1.163333" VALUE_7="0.000871" VALUE_8="0.685525" VALUE_9="-0.169880" VALUE_10="0.709365" VALUE_11="199.199326" VALUE_12="0.684840" VALUE_13="-0.169710" VALUE_14="0.708656" VALUE_15="200.000122"/>
+   <RmMatrixVariable NAME="matViewProjection" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC="ViewProjection" VALUE_0="-0.050035" VALUE_1="1.681877" VALUE_2="-1.498664" VALUE_3="0.000002" VALUE_4="-0.431189" VALUE_5="1.573120" VALUE_6="1.779831" VALUE_7="0.001231" VALUE_8="0.984655" VALUE_9="0.135299" VALUE_10="0.118965" VALUE_11="199.199432" VALUE_12="0.983670" VALUE_13="0.135163" VALUE_14="0.118846" VALUE_15="200.000229"/>
    <RmDynamicVariable NAME="fvLightPosition" API="" ARTIST_EDITABLE="TRUE" VARIABLE_SEMANTIC="" VARIABLE_TYPE="FLOAT" ROWS="3" COLUMNS="1" FIXED_SIZE="TRUE" MIN="-100.000000" MAX="100.000000" CLAMP="TRUE" NORMALIZE="FALSE">
     <RmDynamicVariableValueContainer>
      <RmDynamicVariableValue ROW_INDEX="0" COLUMN_INDEX="0" VALUE="-100.000000"/>
@@ -1055,7 +1055,7 @@ C:\Users\student\Desktop\Scott Barrett\Graphics2\Monkayyyy\]]></RmTextDataBlock>
      <RmDynamicVariableValue ROW_INDEX="2" COLUMN_INDEX="0" VALUE="100.000000"/>
     </RmDynamicVariableValueContainer>
    </RmDynamicVariable>
-   <RmMatrixVariable NAME="matView" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC="View" VALUE_0="0.666719" VALUE_1="0.538401" VALUE_2="-0.515375" VALUE_3="-0.000005" VALUE_4="-0.294075" VALUE_5="0.825423" VALUE_6="0.481868" VALUE_7="0.000361" VALUE_8="0.684840" VALUE_9="-0.169710" VALUE_10="0.708656" VALUE_11="200.000122" VALUE_12="0.000000" VALUE_13="0.000000" VALUE_14="0.000000" VALUE_15="1.000000"/>
+   <RmMatrixVariable NAME="matView" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC="View" VALUE_0="-0.022205" VALUE_1="0.746418" VALUE_2="-0.665107" VALUE_3="0.000001" VALUE_4="-0.178604" VALUE_5="0.651607" VALUE_6="0.737230" VALUE_7="0.000510" VALUE_8="0.983670" VALUE_9="0.135163" VALUE_10="0.118846" VALUE_11="200.000229" VALUE_12="0.000000" VALUE_13="0.000000" VALUE_14="0.000000" VALUE_15="1.000000"/>
    <RmDynamicVariable NAME="fvEyePosition" API="" ARTIST_EDITABLE="FALSE" VARIABLE_SEMANTIC="" VARIABLE_TYPE="FLOAT" ROWS="3" COLUMNS="1" FIXED_SIZE="TRUE" MIN="-100.000000" MAX="100.000000" CLAMP="TRUE" NORMALIZE="FALSE">
     <RmDynamicVariableValueContainer>
      <RmDynamicVariableValue ROW_INDEX="0" COLUMN_INDEX="0" VALUE="0.000000"/>
@@ -1170,6 +1170,7 @@ float4 ps_main( PS_INPUT Input ) : COLOR0
    bumpColor = (bumpColor * 2.0f) - 1.0f;
    
    float3 bumpNormal = (bumpColor.x * Input.Tangent) + (bumpColor.y * Input.Binormal) + (bumpColor.z * Input.Normal);
+   // Note to self: Try taking a vector between bumpNormal and Input.Normal for N to decrease bumpiness?
    float3 N = bumpNormal;
    
    float3 Rm = normalize(2.0f * (dot(Lm, N)) * N - Lm);
