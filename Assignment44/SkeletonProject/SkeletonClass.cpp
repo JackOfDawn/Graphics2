@@ -67,7 +67,7 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
 		PostQuitMessage(0);
 	}
 	InitAllVertexDeclarations();
-	HR(gd3dDevice->SetVertexDeclaration(VertexPos::Decl));
+	HR(gd3dDevice->SetVertexDeclaration(VertexTBN::Decl));
 
 	mCameraRadius    = 50.0f;
 	mCameraRotationY = 0;
@@ -86,11 +86,12 @@ SkeletonClass::SkeletonClass(HINSTANCE hInstance, std::string winCaption, D3DDEV
     m_Objects[counter]->Create( gd3dDevice );
 	//m_Objects[counter]->translateTo(0, 0 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(0, 0, D3DX_PI / 2);
-	//m_Objects[counter]->scale(10, 10, 10);
+	m_Objects[counter]->scale(.5, .5, .5);
 	counter++;
 	
 	m_Objects.push_back(new Box(10, 10, 10));
 	m_Objects[counter]->Create(gd3dDevice);
+	m_Objects[counter]->scale(.1, .1, .1);
 	//m_Objects[counter]->translateTo(0, -13 + yOffset, 0);
 	//m_Objects[counter]->rotateYawPitchRoll(D3DX_PI / 2, D3DX_PI / 2, D3DX_PI / 4);
 	counter++;
@@ -205,11 +206,20 @@ void SkeletonClass::updateScene(float dt)
 	bool newKeyO = gDInput->keyDown(DIKEYBOARD_O);
 	bool newKeyT = gDInput->keyDown(DIKEYBOARD_T);
 	bool newKeyW = gDInput->keyDown(DIKEYBOARD_W);
+	bool newKeyA = gDInput->keyDown(DIKEYBOARD_A);
 	bool newKeyS = gDInput->keyDown(DIKEYBOARD_S);
 	bool newKeyD = gDInput->keyDown(DIKEYBOARD_D);
 	bool newKeyR = gDInput->keyDown(DIKEYBOARD_R);
 	bool newKeyMinus = gDInput->keyDown(DIKEYBOARD_MINUS);
 	bool newKeyPlus = gDInput->keyDown(DIKEYBOARD_EQUALS);
+	bool newKey1 = gDInput->keyDown(DIKEYBOARD_1);
+	bool newKey2 = gDInput->keyDown(DIKEYBOARD_2);
+	bool newKey3 = gDInput->keyDown(DIKEYBOARD_3);
+	bool newKey4 = gDInput->keyDown(DIKEYBOARD_4);
+	bool newKey5 = gDInput->keyDown(DIKEYBOARD_5);
+	bool newKey6 = gDInput->keyDown(DIKEYBOARD_6);
+	bool newKey7 = gDInput->keyDown(DIKEYBOARD_7);
+
 	if (!oldKeyO && newKeyO)
 	{
 		if (++m_CurrentObjectIter == m_Objects.end())
@@ -226,27 +236,64 @@ void SkeletonClass::updateScene(float dt)
 		//WireFrame
 		renderOptions.wireFrameOn = !renderOptions.wireFrameOn;
 	}
+	if (!oldKeyA && newKeyA)
+	{
+		renderOptions.setStrength(renderOptions.getStrength() - 0.1f);
+	}
 	if (!oldKeyS && newKeyS)
 	{
-		// Turn off specular (is this possible?)
-		renderOptions.specularOn = !renderOptions.specularOn;
+		renderOptions.setStrength(renderOptions.getStrength() + 0.1f);
 	}
+	/*
 	if (!oldKeyD && newKeyD)
 	{
-		// Turn off diffuse (is this possible?)
 		renderOptions.diffuseOn = !renderOptions.diffuseOn;
 	}
+	*/
 	if (!oldKeyR && newKeyR)
 	{
 		renderOptions.reflectionOn = !renderOptions.reflectionOn;
 	}
 
+	if (!oldKeyMinus && newKeyMinus)
+	{
+		renderOptions.setBlend(renderOptions.getBlend() - .1f);
+	}
+	if (!oldKeyPlus && newKeyPlus)
+	{
+		renderOptions.setBlend(renderOptions.getBlend() + .1f);
+	}
+#define NUM(X) \
+	if (!oldKey##X && newKey##X) \
+	{ renderOptions.specPow = pow(2, X); }
+
+	NUM(1);
+	NUM(2);
+	NUM(3);
+	NUM(4);
+	NUM(5);
+	NUM(6);
+	NUM(7);
+
+#undef NUM
+
 	oldKeyO = newKeyO;
 	oldKeyT = newKeyT;
 	oldKeyW = newKeyW;
+	oldKeyA = newKeyA;
 	oldKeyS = newKeyS;
 	oldKeyD = newKeyD;
 	oldKeyR = newKeyR;
+	oldKeyMinus = newKeyMinus;
+	oldKeyPlus = newKeyPlus;
+	oldKey1 = newKey1;
+	oldKey2 = newKey2;
+	oldKey3 = newKey3;
+	oldKey4 = newKey4;
+	oldKey5 = newKey5;
+	oldKey6 = newKey6;
+	oldKey7 = newKey7;
+
 	if (mRSBlend > 1)
 		mRSBlend = 1;
 	else if (mRSBlend < 0)

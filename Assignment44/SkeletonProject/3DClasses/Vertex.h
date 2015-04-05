@@ -24,4 +24,20 @@ struct VertexPos
 	static IDirect3DVertexDeclaration9* Decl;
 };
 //=============================================================================
+
+struct VertexTBN
+{
+
+	VertexTBN():pos(0.0f, 0.0f, 0.0f){};
+	VertexTBN(float x, float y, float z) :pos(x, y, z){}
+	VertexTBN(const D3DXVECTOR3& v) :pos(v){}
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 texcoord;
+	D3DXVECTOR3 tangent;
+	D3DXVECTOR3 binormal;
+	
+	static IDirect3DVertexDeclaration9* Decl;
+};
 #endif // VERTEX_H

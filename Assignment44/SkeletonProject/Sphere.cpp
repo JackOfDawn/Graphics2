@@ -14,23 +14,26 @@ numSideFacets(numSideFacets)
 
 void Sphere::Create(IDirect3DDevice9* gd3dDevice)
 {	
-	HR(D3DXCreateSphere(gd3dDevice, radius, numSideFacets / 2, numSideFacets / 2, &m_Mesh, 0));
+	//HR(D3DXCreateSphere(gd3dDevice, radius, numSideFacets / 2, numSideFacets / 2, &m_Mesh, 0));
+	DWORD numMaterials = 0;
+	HRESULT result = (D3DXLoadMeshFromX("Sphere.x", D3DXMESH_MANAGED, gd3dDevice, NULL, &m_MateriaBuffer, NULL, &numMaterials, &m_Mesh));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	// Set up new vertices and do texture mapping
-	SetUpUV([](VertexPos in) -> D3DXVECTOR2 {
-		double Rxz = sqrt(pow(in.pos.y, 2) + pow(in.pos.x, 2));
-		D3DXVECTOR2 out;
-		out.x = (FLOAT)((atan2f(in.pos.y , in.pos.x) / (2 * D3DX_PI)) + 0.5);
-		out.y = (FLOAT)((atan(in.pos.z / Rxz) / D3DX_PI) + 0.5);
+	//SetUpUV([](VertexPos in) -> D3DXVECTOR2 {
+	//	double Rxz = sqrt(pow(in.pos.y, 2) + pow(in.pos.x, 2));
+	//	D3DXVECTOR2 out;
+	//	out.x = (FLOAT)((atan2f(in.pos.y , in.pos.x) / (2 * D3DX_PI)) + 0.5);
+	//	out.y = (FLOAT)((atan(in.pos.z / Rxz) / D3DX_PI) + 0.5);
 		
-		return out;
-	});
+	//	return out;
+	//});
+
+	generateTBNs();
 }
 void Sphere::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 {

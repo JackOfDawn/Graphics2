@@ -37,6 +37,7 @@ protected:
 	IDirect3DVertexBuffer9*     m_VertexBuffer;
 	IDirect3DIndexBuffer9*      m_IndexBuffer;
 	ID3DXMesh*					m_Mesh;
+	LPD3DXBUFFER				m_MateriaBuffer;
 	std::unique_ptr<BaseMaterial> m_PhongMaterial;
 	std::unique_ptr<BaseMaterial> m_GouraudMaterial;
 
@@ -48,6 +49,8 @@ protected:
     // Replace the code in the following methods
     virtual void buildDemoCubeVertexBuffer( IDirect3DDevice9* gd3dDevice );
     virtual void buildDemoCubeIndexBuffer( IDirect3DDevice9* gd3dDevice );
+
+	void generateTBNs();
 	
 	struct AddIndex
 	{

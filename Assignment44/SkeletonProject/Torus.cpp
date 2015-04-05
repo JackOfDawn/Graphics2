@@ -22,7 +22,6 @@ void Torus::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	SetUpUV([this](VertexPos in){
 		D3DXVECTOR3 out;
@@ -30,6 +29,7 @@ void Torus::Create(IDirect3DDevice9* gd3dDevice)
 		out.y = (in.pos.y) / (radius2);
 		return out;
 	});
+	generateTBNs();
 }
 
 void Torus::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

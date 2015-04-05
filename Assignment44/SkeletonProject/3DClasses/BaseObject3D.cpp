@@ -31,8 +31,9 @@ BaseObject3D::~BaseObject3D(void)
 //-----------------------------------------------------------------------------
 void BaseObject3D::Create( IDirect3DDevice9* gd3dDevice )
 {
-    buildDemoCubeVertexBuffer( gd3dDevice );
-    buildDemoCubeIndexBuffer( gd3dDevice );
+    //buildDemoCubeVertexBuffer( gd3dDevice );
+    //buildDemoCubeIndexBuffer( gd3dDevice );
+	//generateTBNs();
 }
 
 //-----------------------------------------------------------------------------
@@ -56,19 +57,15 @@ void BaseObject3D::Render( IDirect3DDevice9* gd3dDevice,
     // Send to render
 	if (m_Mesh)
 	{
-		if (m_PhongMaterial != nullptr && m_GouraudMaterial != nullptr)
+		if (m_PhongMaterial != nullptr)
 		{
-			D3DXMATRIX viewProjMat = view * projection;
+			//D3DXMATRIX viewProjMat = view * projection;
 			if (options.phongShader)
 			{
-				m_PhongMaterial->Update(m_World, viewProjMat, camPos);
+				m_PhongMaterial->Update(m_World, view, projection, camPos);
 				m_PhongMaterial->Render(m_Mesh, options);
 			}
-			else
-			{
-				m_GouraudMaterial->Update(m_World, viewProjMat, camPos);
-				m_GouraudMaterial->Render(m_Mesh, options);
-			}
+			
 		}
 		//else
 			//HR(m_Mesh->DrawSubset(0));
@@ -219,4 +216,40 @@ void BaseObject3D::SetUpUV(std::function<D3DXVECTOR2(VertexPos)> f)
 
 		m_Mesh->Release();
 		m_Mesh = mesh;
+}
+
+//==================================================================================
+//This following function is courtosy of vince, MY MAN!
+void BaseObject3D::generateTBNs()
+{
+	// Grab our vertex description
+	D3DVERTEXELEMENT9 elements[64];
+	UINT numElements = 0;
+	VertexTBN::Decl->GetDeclaration(elements, &numElements);
+	
+
+	// Create a copy of our sphere mesh using our vertex description instead of the old one
+	ID3DXMesh* temp = 0;
+	HR(m_Mesh->CloneMesh(D3DXMESH_MANAGED, elements, gd3dDevice, &temp));
+
+	// Release our old mesh since we have a copy we will be modifying in system memory
+	ReleaseCOM(m_Mesh);
+
+	HR(D3DXComputeTangentFrameEx(
+		temp, // Input mesh
+		D3DDECLUSAGE_TEXCOORD, 0, // Vertex element of input tex-coords.  
+		D3DDECLUSAGE_BINORMAL, 0, // Vertex element to output binormal.
+		D3DDECLUSAGE_TANGENT, 0,  // Vertex element to output tangent.
+		D3DDECLUSAGE_NORMAL, 0,   // Vertex element to output normal.
+		0, // Options
+		0, // Adjacency
+		0.01f, 0.25f, 0.01f, // Thresholds for handling errors
+		&m_Mesh, // Output mesh
+		0));         // Vertex Remapping
+
+	// Clone the copy of the mesh back into the member variable with hardware friendly tags
+	//HR(temp->CloneMesh(D3DXMESH_MANAGED | D3DXMESH_WRITEONLY, elements, gd3dDevice, &m_Mesh));
+
+	// Release our local copy since we no longer need it
+	ReleaseCOM(temp);
 }

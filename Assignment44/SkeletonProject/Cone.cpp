@@ -17,6 +17,8 @@ void Cone::Create(IDirect3DDevice9* gd3dDevice)
 {	
 	
 	//HR(D3DXCreateTeapot(gd3dDevice, &m_Mesh, 0));
+	//DWORD numMaterials = 0;
+	//HRESULT result = (D3DXLoadMeshFromX("Cube.x", D3DXMESH_MANAGED, gd3dDevice, NULL, &m_MateriaBuffer, NULL, &numMaterials, &m_Mesh));
 	HR(D3DXCreateCylinder(gd3dDevice, radius, 0, height, sideFacetsNum / 2, sideFacetsNum / 2, &m_Mesh, 0));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
@@ -24,7 +26,6 @@ void Cone::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumTriangles = m_Mesh->GetNumFaces();
 
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	SetUpUV([this](VertexPos in) {
 		D3DXVECTOR2 out;
@@ -32,6 +33,8 @@ void Cone::Create(IDirect3DDevice9* gd3dDevice)
 		out.y = in.pos.y / height;
 		return out;
 	});
+	
+	generateTBNs();
 }
 
 void Cone::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)

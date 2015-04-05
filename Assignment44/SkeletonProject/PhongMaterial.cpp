@@ -6,7 +6,7 @@
 PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 {
 	ID3DXBuffer* errorBuffer = nullptr;
-	HRESULT result = D3DXCreateEffectFromFile(device, "phong.fx", NULL, NULL, D3DXSHADER_DEBUG | D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &m_Effect, &errorBuffer);
+	HRESULT result = D3DXCreateEffectFromFile(device, "ReflectionPhong.fx", NULL, NULL, D3DXSHADER_DEBUG | D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, NULL, &m_Effect, &errorBuffer);
 
 	if (errorBuffer)
 	{
@@ -22,54 +22,114 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 	m_Shininess = 89.0f;
 
 	// Set up handles
-	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
+
 	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
+	m_ViewHandle = m_Effect->GetParameterByName(NULL, "matView");
+	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "World");
+
+
+
 
 	{
-		m_LightPosWHandle = m_Effect->GetParameterByName(NULL, "dirLightDir");
-		// Give default values
-		FLOAT dirLightDir[] = { 0, -1, 0 };
-		m_Effect->SetFloatArray(m_LightPosWHandle, dirLightDir, 3);
+		m_LightPosWHandle = m_Effect->GetParameterByName(NULL, "fvLightPosition");
+		FLOAT lightPosition[] = { -100, 0, -100 };
+		m_Effect->SetFloatArray(m_LightPosWHandle, lightPosition, 3);
 	}
 
 	{
-		D3DXHANDLE hDirLightColor = m_Effect->GetParameterByName(NULL, "dirLightColor");
-		D3DXVECTOR4 dirLightColor(1.0f, 1.0f, 1.0f, 1.0f);
-		m_Effect->SetVector(hDirLightColor, &dirLightColor);
+		m_ViewerPosWHandle = m_Effect->GetParameterByName(NULL, "fvEyePosition");
+		FLOAT eyePosition[] = { 100, 100, 100 };
+		m_Effect->SetFloatArray(m_ViewerPosWHandle, eyePosition, 3);
 	}
 
 	{
-		D3DXHANDLE hMaterialAmbient = m_Effect->GetParameterByName(NULL, "materialAmbient");
-		D3DXVECTOR4 materialAmbient(0.9f, 0.9f, 0.9f, 1.0f);
-		m_Effect->SetVector(hMaterialAmbient, &materialAmbient);
+		m_AmbientColHandle = m_Effect->GetParameterByName(NULL, "fvAmbient");
+		FLOAT ambientCol[] = { 1.0f, 1.0f, 1.0f };
+		m_Effect->SetFloatArray(m_AmbientColHandle, ambientCol, 3);
 	}
 
 	{
-		m_DiffuseColHandle = m_Effect->GetParameterByName(NULL, "materialDiffuse");
-		m_Effect->SetFloatArray(m_DiffuseColHandle, (FLOAT*)m_DiffuseColor, 3);
+		m_SpecularColHandle = m_Effect->GetParameterByName(NULL, "fvSpecular");
+		m_Effect->SetFloatArray(m_SpecularColHandle, m_SpecularColor, 3);
 	}
 
 	{
-		m_SpecularColHandle = m_Effect->GetParameterByName(NULL, "materialSpecular");
-		m_Effect->SetFloatArray(m_SpecularColHandle, (FLOAT*)m_SpecularColor, 3);
+		m_DiffuseColHandle = m_Effect->GetParameterByName(NULL, "fvDiffuse");
+		m_Effect->SetFloatArray(m_DiffuseColHandle, m_DiffuseColor, 3);
 	}
 
 	{
-		m_ShininessHandle = m_Effect->GetParameterByName(NULL, "materialPower");
-		m_Effect->SetFloat(m_ShininessHandle, m_Shininess);
+		m_kAmbientHandle = m_Effect->GetParameterByName(NULL, "ka");
+		FLOAT ambientConst = .10f;
+		m_Effect->SetFloat(m_kAmbientHandle, ambientConst);
 	}
 
+	{
+		m_kDiffuseHandle = m_Effect->GetParameterByName(NULL, "kd");
+		FLOAT diffuseConst = .30f;
+		m_Effect->SetFloat(m_kDiffuseHandle, diffuseConst);
+	}
+
+	{
+		m_kSpecularHandle = m_Effect->GetParameterByName(NULL, "ks");
+		FLOAT specularConst = 1.0f;
+		m_Effect->SetFloat(m_kSpecularHandle, specularConst);
+	}
+
+	{
+		m_kTextureHandle = m_Effect->GetParameterByName(NULL, "kt");
+		FLOAT textureConst = 1.0f;
+		m_Effect->SetFloat(m_kTextureHandle, textureConst);
+	}
+
+	{
+		m_CamHandle = m_Effect->GetParameterByName(NULL, "CameraPosition");
+		
+		m_Effect->SetFloatArray(m_CamHandle, m_DiffuseColor, 3);
+	}
+
+	{
+		m_BumpinessHandle = m_Effect->GetParameterByName(NULL, "bumpiness");
+		FLOAT bumpConst = 1.0f;
+		m_Effect->SetFloat(m_BumpinessHandle, bumpConst);
+	}
+
+	{
+		m_Reflectiveness = m_Effect->GetParameterByName(NULL, "reflectiveness");
+		FLOAT reflectiveConst = 1.0f;
+		m_Effect->SetFloat(m_Reflectiveness, reflectiveConst);
+	}
+
+	{
+		m_SpecPow = m_Effect->GetParameterByName(NULL, "fSpecularPower");
+		FLOAT specPow = 1.0f;
+		m_Effect->SetFloat(m_SpecPow, specPow);
+	}
 	{
 		//set texture
 		IDirect3DTexture9* tex = nullptr;
-		D3DXCreateTextureFromFile(device, "White.jpg", &tex);
+		D3DXCreateTextureFromFile(device, "Fieldstone.tga", &tex);
 		if (!tex)
 		{
 			::MessageBox(0, "Couldn't load texture", 0, 0);
 		}
 		else
 		{
-			D3DXHANDLE hTexture = m_Effect->GetParameterByName(NULL, "texTexture");
+			D3DXHANDLE hTexture = m_Effect->GetParameterByName(NULL, "base_Tex");
+			assert(hTexture != NULL);
+			m_Effect->SetTexture(hTexture, tex);
+			tex->Release();
+		}
+		//bump
+		tex = nullptr;
+		D3DXCreateTextureFromFile(device, "FieldstoneBumpDOT3.tga", &tex);
+		if (!tex)
+		{
+			::MessageBox(0, "Couldn't load texture", 0, 0);
+		}
+		else
+		{
+			D3DXHANDLE hTexture = m_Effect->GetParameterByName(NULL, "bump_Tex");
 			assert(hTexture != NULL);
 			m_Effect->SetTexture(hTexture, tex);
 			tex->Release();
@@ -77,14 +137,14 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 		//set env texture
 		IDirect3DCubeTexture9* cubeTex = nullptr;
-		D3DXCreateCubeTextureFromFile(device, "Islands.dds", &cubeTex);
+		D3DXCreateCubeTextureFromFile(device, "SkyBox.dds", &cubeTex);
 		if (!cubeTex)
 		{
 			::MessageBox(0, "Couldn't load CUBE", 0, 0);
 		}
 		else
 		{
-			D3DXHANDLE hCubeTexture = m_Effect->GetParameterByName(NULL, "SkyBoxTexture");
+			D3DXHANDLE hCubeTexture = m_Effect->GetParameterByName(NULL, "skyBox_Tex");
 			assert(hCubeTexture != NULL);
 			m_Effect->SetTexture(hCubeTexture, cubeTex);
 			cubeTex->Release();
@@ -92,25 +152,7 @@ PhongMaterial::PhongMaterial(IDirect3DDevice9* device)
 
 	}
 
-	// Vertex shader handles
-	m_WorldMatHandle = m_Effect->GetParameterByName(NULL, "matWorld");
-	m_ViewProjectionMatHandle = m_Effect->GetParameterByName(NULL, "matViewProjection");
-	m_MatWorldITHandle = m_Effect->GetParameterByName(NULL, "matWorldIT");
-	m_ViewPositionHandle = m_Effect->GetParameterByName(NULL, "viewPosition");
-
-	// Pixel shader handles
-	m_UseDiffuseHandle = m_Effect->GetParameterByName(NULL, "useDiffuse");
-	assert(m_UseDiffuseHandle != NULL);
-	m_UseSpecularHandle = m_Effect->GetParameterByName(NULL, "useSpecular");
-	assert(m_UseSpecularHandle != NULL);
-	m_UseTextureHandle = m_Effect->GetParameterByName(NULL, "useTexture");
-	assert(m_UseTextureHandle != NULL);
-	m_UseReflectionHandle = m_Effect->GetParameterByName(NULL, "useReflection");
-	assert(m_UseReflectionHandle != NULL);
-	m_RSBlendHandle = m_Effect->GetParameterByName(NULL, "RSBlend");
-	assert(m_RSBlendHandle != NULL);
 }
-
 PhongMaterial::~PhongMaterial()
 {
 	// eh.
@@ -121,29 +163,18 @@ void PhongMaterial::ConnectToEffect(ID3DXEffect* effect)
 	m_Effect = effect;
 }
 
-void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewProjMat, D3DXVECTOR3& camPos)
+void PhongMaterial::Update(D3DXMATRIX& worldMat, D3DXMATRIX& viewMat, D3DXMATRIX& projMatrix, D3DXVECTOR3& camPos)
 {
 	m_WorldMat = worldMat;
-	m_ViewProjectionMat = worldMat * viewProjMat;
+	m_ViewProjectionMat = worldMat * viewMat * projMatrix;
 
-	D3DXMATRIX worldMatIT;
-	if (!D3DXMatrixInverse(&worldMatIT, NULL, &m_WorldMat))
-	{
-		::MessageBox(0, "Could not invert matrix", 0, 0);
-		return;
-	}
-	//D3DXVECTOR3 lightPos(camPos.x, -1, camPos.z);
-	D3DXMatrixTranspose(&worldMatIT, &worldMatIT);
-	HR(m_Effect->SetMatrix(m_MatWorldITHandle, &worldMatIT));
-	
-	D3DXVECTOR4 viewPosition(viewProjMat._41, viewProjMat._42, viewProjMat._43, viewProjMat._44);
-	HR(m_Effect->SetVector(m_ViewPositionHandle, &viewPosition));
-	
-
-	//HR(m_Effect->SetFloatArray(m_LightPosWHandle, -camPos, 3));
+	//FLOAT arr[] = { viewMat._41, viewMat._42, viewMat._43 };
+	//HR(m_Effect->SetFloatArray(m_ViewerPosWHandle, arr, 3));
+	HR(m_Effect->SetFloatArray(m_CamHandle, camPos, 3));
+	HR(m_Effect->SetMatrix(m_WorldMatHandle, &worldMat));
+	HR(m_Effect->SetMatrix(m_ViewHandle, &viewMat));
 
 	HR(m_Effect->SetMatrix(m_ViewProjectionMatHandle, &m_ViewProjectionMat));
-	HR(m_Effect->SetMatrix(m_WorldMatHandle, &m_WorldMat));
 
 	HR(m_Effect->CommitChanges());
 }
@@ -153,11 +184,10 @@ void PhongMaterial::Render(ID3DXBaseMesh* mesh, RenderOptions options)
 	UINT passes = 0;
 	D3DXHANDLE technique = m_Effect->GetTechniqueByName("Default_DirectX_Effect");
 
-	m_Effect->SetBool(m_UseDiffuseHandle, options.diffuseOn);
-	m_Effect->SetBool(m_UseSpecularHandle, options.specularOn);
-	m_Effect->SetBool(m_UseTextureHandle, options.textureOn);
-	m_Effect->SetBool(m_UseReflectionHandle, options.reflectionOn);
-	m_Effect->SetFloat(m_RSBlendHandle, options.getBlend());
+	m_Effect->SetFloat(m_kTextureHandle, options.textureOn ? 1 : 0);
+	m_Effect->SetFloat(m_Reflectiveness, options.reflectionOn ? options.getBlend() : 0);
+	m_Effect->SetFloat(m_BumpinessHandle, options.normalMappingOn ? options.getStrength() : 0);
+	m_Effect->SetFloat(m_SpecPow, options.specPow);
 
 	m_Effect->SetTechnique(technique);
 	m_Effect->Begin(&passes, NULL);

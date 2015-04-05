@@ -13,16 +13,17 @@ depth(depth)
 
 void Box::Create(IDirect3DDevice9* gd3dDevice)
 {
-	HR(D3DXCreateBox(gd3dDevice, width, height, depth, &m_Mesh, 0));
+	//HR(D3DXCreateBox(gd3dDevice, width, height, depth, &m_Mesh, 0));
+	DWORD numMaterials = 0;
+	HRESULT result = (D3DXLoadMeshFromX("Cube.x", D3DXMESH_MANAGED, gd3dDevice, NULL, &m_MateriaBuffer, NULL, &numMaterials, &m_Mesh));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	int vertNum = 0;
-
+	/*
 	// Set up vertices and texture mapping!
 	SetUpUV([&vertNum](VertexPos in) {
 		D3DXVECTOR2 out;
@@ -49,7 +50,9 @@ void Box::Create(IDirect3DDevice9* gd3dDevice)
 		}
 		vertNum++;
 		return out;
-	});
+	});*/
+
+	//D3DXComputeTangentFrameEx(m_Mesh, )
 }
 
 void Box::Update(float dt)

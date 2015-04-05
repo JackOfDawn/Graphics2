@@ -16,7 +16,6 @@ void Teapot::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	SetUpUV([this](VertexPos in){
 		D3DXVECTOR3 out;
@@ -25,6 +24,7 @@ void Teapot::Create(IDirect3DDevice9* gd3dDevice)
 		return out;
 	});
 
+	generateTBNs();
 }
 
 void Teapot::Update(float dt)

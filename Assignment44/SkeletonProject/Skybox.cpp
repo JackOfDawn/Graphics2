@@ -12,7 +12,7 @@ depth(depth)
 
 void SkyBox::Create(IDirect3DDevice9* gd3dDevice)
 {
-	std::string envMapName = "Islands.dds";
+	std::string envMapName = "SkyBox.dds";
 	HR(D3DXCreateBox(gd3dDevice, width, height, depth, &m_Mesh, 0));
 	HR(m_Mesh->GetVertexBuffer(&m_VertexBuffer));
 	HR(m_Mesh->GetIndexBuffer(&m_IndexBuffer));

@@ -60,10 +60,18 @@ private:
 	bool oldKeyT;
 	bool oldKeyW;
 	bool oldKeyD;
+	bool oldKeyA;
 	bool oldKeyS;
 	bool oldKeyR;
 	bool oldKeyMinus;
 	bool oldKeyPlus;
+	bool oldKey1;
+	bool oldKey2;
+	bool oldKey3;
+	bool oldKey4;
+	bool oldKey5;
+	bool oldKey6;
+	bool oldKey7;
 
 	RenderOptions renderOptions;
 

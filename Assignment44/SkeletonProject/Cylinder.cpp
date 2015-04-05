@@ -21,7 +21,6 @@ void Cylinder::Create(IDirect3DDevice9* gd3dDevice)
 	m_NumVertices = m_Mesh->GetNumVertices();
 	m_NumTriangles = m_Mesh->GetNumFaces();
 	m_PhongMaterial.reset(new PhongMaterial(gd3dDevice));
-	m_GouraudMaterial.reset(new GouraudMaterial(gd3dDevice));
 
 	SetUpUV([this](VertexPos in){
 		D3DXVECTOR3 out;
@@ -29,6 +28,8 @@ void Cylinder::Create(IDirect3DDevice9* gd3dDevice)
 		out.y = (in.pos.y * .5) / (height) + .5;
 		return out;
 	});
+
+	generateTBNs();
 }
 
 void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
@@ -80,6 +81,8 @@ void Cylinder::buildDemoCubeVertexBuffer(IDirect3DDevice9* gd3dDevice)
 	}
 
 	HR(m_VertexBuffer->Unlock());
+
+	generateTBNs();
 }
 
 void Cylinder::buildDemoCubeIndexBuffer(IDirect3DDevice9* gd3dDevice)
