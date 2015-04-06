@@ -16,5 +16,9 @@ and the reflection vector to get the corresponding color. The color is then blen
 
 Normal Mapping
 To get the TBN vectors we make use of the directX function D3DXComputedTangentFrameEX which
-creates them based off of the mesh.
+creates them based off of the mesh. The TBN vectors are then multiplied by the view matrix
+in the vertex shader to produce vectors in tangent space. The pixel shader than scales the
+tangent, normal, and binormal by the color read from the bump map to produce a new normal that
+is different from the mesh's usual normal. Blending between the normal generated from the bump map
+and the normal from the mesh allows us to adjust the bumpiness of the object.
 
